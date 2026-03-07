@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkyWatch — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-page">
+
+<!-- Subtle background -->
+<div class="dash-bg">
+    <div class="bg-aurora aurora-dash-1"></div>
+    <div class="bg-aurora aurora-dash-2"></div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-brand">
+        <div class="brand-icon small">
+            <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="8" fill="url(#sg2)"/>
+                <path d="M16 2v4M16 26v4M2 16h4M26 16h4M6.34 6.34l2.83 2.83M22.83 22.83l2.83 2.83M22.83 9.17l2.83-2.83M6.34 25.66l2.83-2.83" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                <defs><radialGradient id="sg2"><stop stop-color="#fde68a"/><stop offset="1" stop-color="#f59e0b"/></radialGradient></defs>
+            </svg>
+        </div>
+        <span class="brand-name">SkyWatch</span>
+    </div>
+
+    <div class="nav-stats" id="navStats">
+        <div class="nav-stat">
+            <span class="nav-stat-val" id="statCities">—</span>
+            <span class="nav-stat-label">Cities</span>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-stat">
+            <span class="nav-stat-val" id="statDate">—</span>
+            <span class="nav-stat-label">Since</span>
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <div class="unit-toggle" id="unitToggle">
+            <button class="unit-btn active" id="btnC" onclick="setUnit('C')">°C</button>
+            <button class="unit-btn" id="btnF" onclick="setUnit('F')">°F</button>
+        </div>
+        <button class="refresh-btn" id="refreshBtn" onclick="loadCities(true)" title="Refresh all">
+            <svg id="refreshIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </button>
+        <div class="nav-user" id="navUser">
+            <div class="user-avatar" id="userAvatar">?</div>
+            <div class="user-info">
+                <span class="user-name" id="userName">Loading…</span>
+                <span class="user-tag">@<span id="userTag">—</span></span>
+            </div>
+            <div class="user-dropdown">
+                <a href="/logout" class="dropdown-item logout-item">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Sign Out
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="dash-main">
+
+    <!-- Top bar: add city + search + sort -->
+    <div class="dash-toolbar">
+        <div class="add-city-bar">
+            <div class="search-input-wrap">
+                <svg class="search-icon-input" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="cityInput" type="text" placeholder="Add a city… (e.g. Tokyo, New York)" spellcheck="false">
+            </div>
+            <button class="btn-add" onclick="addCity()" id="addBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add City
+            </button>
+        </div>
+
+        <div class="filter-bar">
+            <div class="filter-search-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="filterInput" type="text" placeholder="Filter cities…" oninput="filterCities()" spellcheck="false">
+            </div>
+            <div class="sort-btns">
+                <button class="sort-btn active" id="sortDefault" onclick="sortCards('default')">Added</button>
+                <button class="sort-btn" id="sortHot" onclick="sortCards('hot')">Hottest</button>
+                <button class="sort-btn" id="sortCold" onclick="sortCards('cold')">Coldest</button>
+                <button class="sort-btn" id="sortAZ" onclick="sortCards('az')">A–Z</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Status bar -->
+    <div class="status-bar" id="statusBar" style="display:none">
+        <div class="spinner"></div>
+        <span id="statusText">Loading weather data…</span>
+    </div>
+
+    <!-- City grid -->
+    <div id="cityGrid" class="city-grid"></div>
+
+    <!-- Empty state -->
+    <div class="empty-state" id="emptyState" style="display:none">
+        <div class="empty-icon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="30" fill="rgba(56,189,248,0.08)" stroke="rgba(56,189,248,0.2)" stroke-width="1.5"/>
+                <path d="M20 36c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="24" cy="26" r="2" fill="#38bdf8"/>
+                <circle cx="40" cy="26" r="2" fill="#38bdf8"/>
+                <path d="M20 42c4-4 20-4 24 0" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+                <path d="M32 14v-4M32 54v-4M14 32h-4M54 32h-4" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+        </div>
+        <h3>No cities yet</h3>
+        <p>Add your first city above to start tracking weather worldwide.</p>
+    </div>
+
+</main>
+
+<!-- Last refresh indicator -->
+<div class="last-refresh" id="lastRefresh"></div>
+
+<script>
+let allCities = [];
+let unit = "C";
+let currentSort = "default";
+let autoRefreshTimer;
+
+// ---- Init ----
+window.onload = async function() {
+    await loadUser();
+    await loadCities();
+    startAutoRefresh();
+};
+
+// ---- Load user info ----
+async function loadUser() {
+    try {
+        const r = await fetch("/get-user");
+        if (!r.ok) { window.location.href = "/"; return; }
+        const data = await r.json();
+        const initials = data.username.slice(0, 2).toUpperCase();
+        document.getElementById("userName").textContent = data.username;
+        document.getElementById("userTag").textContent = data.username;
+        document.getElementById("userAvatar").textContent = initials;
+        document.getElementById("statCities").textContent = data.city_count;
+        document.getElementById("statDate").textContent = data.member_since;
+    } catch(e) {}
+}
+
+// ---- Unit toggle ----
+function setUnit(u) {
+    unit = u;
+    document.getElementById("btnC").classList.toggle("active", u === "C");
+    document.getElementById("btnF").classList.toggle("active", u === "F");
+    renderCities(allCities);
+}
+
+function toDisplay(tempC) {
+    if (unit === "F") return Math.round(tempC * 9/5 + 32);
+    return tempC;
+}
+
+// ---- Load cities ----
+async function loadCities(forceRefresh = false) {
+    const grid = document.getElementById("cityGrid");
+    const statusBar = document.getElementById("statusBar");
+    const emptyState = document.getElementById("emptyState");
+
+    if (forceRefresh) {
+        const icon = document.getElementById("refreshIcon");
+        icon.style.animation = "spin 0.8s linear infinite";
+        setTimeout(() => icon.style.animation = "", 900);
+    }
+
+    setStatus(true, "Fetching live weather data…");
+
+    try {
+        const r = await fetch("/get-cities");
+        if (!r.ok) { window.location.href = "/"; return; }
+        const data = await r.json();
+        allCities = data.filter(c => !c.error);
+        updateCityCount(allCities.length);
+        renderCities(applySort(allCities, currentSort));
+        document.getElementById("lastRefresh").textContent = "Updated " + new Date().toLocaleTimeString();
+    } catch(e) {
+        showToast("Failed to load cities.", "error");
+    }
+    setStatus(false);
+}
+
+// ---- Render city cards ----
+function renderCities(cities) {
+    const grid = document.getElementById("cityGrid");
+    const emptyState = document.getElementById("emptyState");
+    const filterVal = document.getElementById("filterInput").value.trim().toLowerCase();
+    const filtered = filterVal ? cities.filter(c => c.city.toLowerCase().includes(filterVal) || (c.country||"").toLowerCase().includes(filterVal)) : cities;
+
+    grid.innerHTML = "";
+    emptyState.style.display = filtered.length === 0 ? "block" : "none";
+
+    filtered.forEach((c, i) => {
+        const temp = toDisplay(c.temp);
+        const feelsLike = toDisplay(c.feels_like);
+        const tempMin = toDisplay(c.temp_min);
+        const tempMax = toDisplay(c.temp_max);
+        const unitSym = unit === "C" ? "°C" : "°F";
+        const condClass = getConditionClass(c.weather_main);
+        const card = document.createElement("div");
+        card.className = `city-card ${condClass}`;
+        card.style.animationDelay = `${i * 0.06}s`;
+        card.dataset.city = c.city;
+        card.innerHTML = `
+            <div class="card-top">
+                <div class="card-location">
+                    <span class="card-city">${c.city}</span>
+                    <span class="card-country">${c.country || ""}</span>
+                </div>
+                <button class="card-delete" onclick="deleteCity('${c.city}', event)" title="Remove city">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="card-weather-row">
+                <div class="card-temp">${temp}<span class="unit-sym">${unitSym}</span></div>
+                <img src="${c.icon}" alt="${c.description}" class="weather-icon-img" width="70" height="70">
+            </div>
+            <div class="card-desc">${c.description}</div>
+            <div class="card-minmax">
+                <span class="minmax-item">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+                    ${tempMax}${unitSym}
+                </span>
+                <span class="minmax-sep">·</span>
+                <span class="minmax-item">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    ${tempMin}${unitSym}
+                </span>
+            </div>
+            <div class="card-stats">
+                <div class="stat-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                    <span>Feels ${feelsLike}${unitSym}</span>
+                </div>
+                <div class="stat-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 22v-4M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M2 12h6M22 12h-4M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/></svg>
+                    <span>${c.humidity}%</span>
+                </div>
+                <div class="stat-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+                    <span>${c.wind_speed} km/h</span>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// ---- Weather condition class ----
+function getConditionClass(main) {
+    const map = {
+        Clear: "cond-clear", Clouds: "cond-clouds", Rain: "cond-rain",
+        Drizzle: "cond-rain", Thunderstorm: "cond-thunder", Snow: "cond-snow",
+        Mist: "cond-mist", Fog: "cond-mist", Haze: "cond-mist",
+    };
+    return map[main] || "cond-default";
+}
+
+// ---- Add city ----
+async function addCity() {
+    const input = document.getElementById("cityInput");
+    const city = input.value.trim();
+    if (!city) { showToast("Please enter a city name.", "warn"); return; }
+
+    document.getElementById("addBtn").disabled = true;
+    document.getElementById("addBtn").classList.add("loading");
+
+    try {
+        const r = await fetch("/add-city", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({city}) });
+        const data = await r.json();
+        if (r.ok) {
+            input.value = "";
+            showToast(`${data.weather.city} added!`, "success");
+            await loadCities();
+        } else {
+            showToast(data.message, "error");
+        }
+    } catch(e) { showToast("Network error.", "error"); }
+
+    document.getElementById("addBtn").disabled = false;
+    document.getElementById("addBtn").classList.remove("loading");
+}
+
+// ---- Delete city ----
+async function deleteCity(city, e) {
+    e.stopPropagation();
+    const card = document.querySelector(`.city-card[data-city="${city}"]`);
+    if (card) { card.classList.add("removing"); }
+    setTimeout(async () => {
+        try {
+            await fetch("/delete-city", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({city}) });
+            allCities = allCities.filter(c => c.city !== city);
+            updateCityCount(allCities.length);
+            renderCities(applySort(allCities, currentSort));
+            showToast(`${city} removed.`, "info");
+        } catch(e) {}
+    }, 300);
+}
+
+// ---- Sort ----
+function sortCards(mode) {
+    currentSort = mode;
+    document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("sort" + mode.charAt(0).toUpperCase() + mode.slice(1)).classList.add("active");
+    renderCities(applySort(allCities, mode));
+}
+
+function applySort(cities, mode) {
+    const arr = [...cities];
+    if (mode === "hot") arr.sort((a, b) => b.temp - a.temp);
+    else if (mode === "cold") arr.sort((a, b) => a.temp - b.temp);
+    else if (mode === "az") arr.sort((a, b) => a.city.localeCompare(b.city));
+    return arr;
+}
+
+// ---- Filter ----
+function filterCities() {
+    renderCities(applySort(allCities, currentSort));
+}
+
+// ---- Update count ----
+function updateCityCount(n) {
+    document.getElementById("statCities").textContent = n;
+}
+
+// ---- Status ----
+function setStatus(show, text = "") {
+    document.getElementById("statusBar").style.display = show ? "flex" : "none";
+    document.getElementById("statusText").textContent = text;
+}
+
+// ---- Toast ----
+function showToast(msg, type = "info") {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.className = "toast", 3000);
+}
+
+// ---- Auto-refresh every 10 mins ----
+function startAutoRefresh() {
+    clearInterval(autoRefreshTimer);
+    autoRefreshTimer = setInterval(() => loadCities(), 10 * 60 * 1000);
+}
+
+// ---- Enter key to add ----
+document.getElementById("cityInput").addEventListener("keydown", e => {
+    if (e.key === "Enter") addCity();
+});
+
+// ---- User dropdown toggle ----
+document.getElementById("navUser").addEventListener("click", function(e) {
+    this.classList.toggle("open");
+    e.stopPropagation();
+});
+document.addEventListener("click", () => {
+    document.getElementById("navUser").classList.remove("open");
+});
+</script>
+</body>
+</html>
