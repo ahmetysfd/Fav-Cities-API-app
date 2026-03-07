@@ -35,10 +35,22 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             city_name TEXT NOT NULL,
+            country_code TEXT DEFAULT '',
+            visited INTEGER DEFAULT 0,
             added_at TEXT DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
     """)
+
+    # Safe migration: add columns if they don't exist
+    try:
+        cursor.execute("ALTER TABLE cities ADD COLUMN country_code TEXT DEFAULT ''")
+    except Exception:
+        pass
+    try:
+        cursor.execute("ALTER TABLE cities ADD COLUMN visited INTEGER DEFAULT 0")
+    except Exception:
+        pass
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS city_images(
@@ -86,9 +98,7 @@ def fetch_city_image(city):
 
     image_url = None
     wiki_description = ""
-    search_terms = [city, f"{city} city"]
-
-    for term in search_terms:
+    for term in [city, f"{city} city"]:
         try:
             url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{requests.utils.quote(term)}"
             resp = requests.get(url, headers={"User-Agent": "SkyWatch/1.0"}, timeout=6)
@@ -103,7 +113,6 @@ def fetch_city_image(city):
             continue
 
     if not image_url:
-        # Deterministic landscape fallback using city name as seed
         image_url = f"https://picsum.photos/seed/{city.replace(' ', '').lower()}/900/500"
         wiki_description = ""
 
@@ -114,7 +123,6 @@ def fetch_city_image(city):
     """, (city, image_url, wiki_description, datetime.now().isoformat()))
     conn.commit()
     conn.close()
-
     return {"image_url": image_url, "wiki_description": wiki_description}
 
 # ---------- WEATHER ----------
@@ -208,15 +216,21 @@ def logout():
 @login_required
 def get_user():
     conn = get_db_connection()
-    user = conn.execute("SELECT created_at FROM users WHERE id=?", (session["user_id"],)).fetchone()
     count = conn.execute("SELECT COUNT(*) as c FROM cities WHERE user_id=?",
                          (session["user_id"],)).fetchone()
+    visited_count = conn.execute("SELECT COUNT(*) as c FROM cities WHERE user_id=? AND visited=1",
+                                 (session["user_id"],)).fetchone()
+    # Count distinct countries stored in cities table
+    countries = conn.execute(
+        "SELECT COUNT(DISTINCT country_code) as c FROM cities WHERE user_id=? AND country_code != ''",
+        (session["user_id"],)).fetchone()
     conn.close()
     return jsonify({
         "username": session["username"],
         "user_id": session["user_id"],
         "city_count": count["c"],
-        "member_since": user["created_at"][:10] if user and user["created_at"] else "N/A",
+        "visited_count": visited_count["c"],
+        "country_count": countries["c"],
     })
 
 # ---------- CITY ROUTES ----------
@@ -236,8 +250,8 @@ def add_city():
                     (user_id, weather["city"])).fetchone():
         conn.close()
         return jsonify({"message": f"{weather['city']} is already in your library."}), 409
-    conn.execute("INSERT INTO cities (user_id, city_name) VALUES (?,?)",
-                 (user_id, weather["city"]))
+    conn.execute("INSERT INTO cities (user_id, city_name, country_code) VALUES (?,?,?)",
+                 (user_id, weather["city"], weather.get("country", "")))
     conn.commit()
     conn.close()
     city_image = fetch_city_image(weather["city"])
@@ -254,12 +268,31 @@ def delete_city():
     conn.close()
     return jsonify({"message": "Deleted"})
 
+@app.route("/toggle-visited", methods=["POST"])
+@login_required
+def toggle_visited():
+    data = request.get_json()
+    city = data.get("city", "")
+    conn = get_db_connection()
+    row = conn.execute("SELECT visited FROM cities WHERE city_name=? AND user_id=?",
+                       (city, session["user_id"])).fetchone()
+    if row:
+        new_val = 0 if row["visited"] else 1
+        conn.execute("UPDATE cities SET visited=? WHERE city_name=? AND user_id=?",
+                     (new_val, city, session["user_id"]))
+        conn.commit()
+        conn.close()
+        return jsonify({"visited": bool(new_val)})
+    conn.close()
+    return jsonify({"message": "City not found"}), 404
+
 @app.route("/get-cities")
 @login_required
 def get_cities():
     conn = get_db_connection()
-    cities = conn.execute("SELECT city_name FROM cities WHERE user_id=? ORDER BY added_at ASC",
-                          (session["user_id"],)).fetchall()
+    cities = conn.execute(
+        "SELECT city_name, visited FROM cities WHERE user_id=? ORDER BY added_at ASC",
+        (session["user_id"],)).fetchall()
     conn.close()
     results = []
     for row in cities:
@@ -269,10 +302,11 @@ def get_cities():
             img = fetch_city_image(name)
             weather["image_url"] = img["image_url"]
             weather["wiki_description"] = img["wiki_description"]
-            # attach avg rating
+            weather["visited"] = bool(row["visited"])
             conn2 = get_db_connection()
-            avg = conn2.execute("SELECT AVG(rating) as a, COUNT(*) as c FROM reviews WHERE city_name=?",
-                                (name,)).fetchone()
+            avg = conn2.execute(
+                "SELECT AVG(rating) as a, COUNT(*) as c FROM reviews WHERE city_name=?",
+                (name,)).fetchone()
             conn2.close()
             weather["avg_rating"] = round(avg["a"], 1) if avg["a"] else None
             weather["review_count"] = avg["c"]
