@@ -3,15 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkyWatch — Dashboard</title>
+<title>SkyWatch — My City Library</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="dashboard-page">
 
-<!-- Subtle background -->
 <div class="dash-bg">
     <div class="bg-aurora aurora-dash-1"></div>
     <div class="bg-aurora aurora-dash-2"></div>
@@ -30,24 +29,18 @@
         <span class="brand-name">SkyWatch</span>
     </div>
 
-    <div class="nav-stats" id="navStats">
-        <div class="nav-stat">
-            <span class="nav-stat-val" id="statCities">—</span>
-            <span class="nav-stat-label">Cities</span>
-        </div>
+    <div class="nav-stats">
+        <div class="nav-stat"><span class="nav-stat-val" id="statCities">—</span><span class="nav-stat-label">Cities</span></div>
         <div class="nav-divider"></div>
-        <div class="nav-stat">
-            <span class="nav-stat-val" id="statDate">—</span>
-            <span class="nav-stat-label">Since</span>
-        </div>
+        <div class="nav-stat"><span class="nav-stat-val" id="statDate">—</span><span class="nav-stat-label">Since</span></div>
     </div>
 
     <div class="nav-right">
-        <div class="unit-toggle" id="unitToggle">
+        <div class="unit-toggle">
             <button class="unit-btn active" id="btnC" onclick="setUnit('C')">°C</button>
             <button class="unit-btn" id="btnF" onclick="setUnit('F')">°F</button>
         </div>
-        <button class="refresh-btn" id="refreshBtn" onclick="loadCities(true)" title="Refresh all">
+        <button class="refresh-btn" onclick="loadCities(true)" title="Refresh">
             <svg id="refreshIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         </button>
         <div class="nav-user" id="navUser">
@@ -66,197 +59,249 @@
     </div>
 </nav>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <main class="dash-main">
 
-    <!-- Top bar: add city + search + sort -->
+    <!-- Toolbar -->
     <div class="dash-toolbar">
         <div class="add-city-bar">
             <div class="search-input-wrap">
                 <svg class="search-icon-input" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input id="cityInput" type="text" placeholder="Add a city… (e.g. Tokyo, New York)" spellcheck="false">
+                <input id="cityInput" type="text" placeholder="Add a city to your library… e.g. Paris, Tokyo" spellcheck="false">
             </div>
             <button class="btn-add" onclick="addCity()" id="addBtn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add City
+                Add to Library
             </button>
         </div>
-
         <div class="filter-bar">
             <div class="filter-search-wrap">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input id="filterInput" type="text" placeholder="Filter cities…" oninput="filterCities()" spellcheck="false">
+                <input id="filterInput" type="text" placeholder="Filter…" oninput="filterCities()" spellcheck="false">
             </div>
             <div class="sort-btns">
-                <button class="sort-btn active" id="sortDefault" onclick="sortCards('default')">Added</button>
-                <button class="sort-btn" id="sortHot" onclick="sortCards('hot')">Hottest</button>
-                <button class="sort-btn" id="sortCold" onclick="sortCards('cold')">Coldest</button>
-                <button class="sort-btn" id="sortAZ" onclick="sortCards('az')">A–Z</button>
+                <button class="sort-btn active" id="sortDefault"  onclick="sortCards('default')">Added</button>
+                <button class="sort-btn" id="sortHot"     onclick="sortCards('hot')">Hottest</button>
+                <button class="sort-btn" id="sortCold"    onclick="sortCards('cold')">Coldest</button>
+                <button class="sort-btn" id="sortRating"  onclick="sortCards('rating')">Top Rated</button>
+                <button class="sort-btn" id="sortAZ"      onclick="sortCards('az')">A–Z</button>
             </div>
         </div>
     </div>
 
-    <!-- Toast notification -->
+    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <!-- Status bar -->
+    <!-- Status -->
     <div class="status-bar" id="statusBar" style="display:none">
         <div class="spinner"></div>
-        <span id="statusText">Loading weather data…</span>
+        <span id="statusText">Loading…</span>
     </div>
 
-    <!-- City grid -->
+    <!-- City Grid -->
     <div id="cityGrid" class="city-grid"></div>
 
     <!-- Empty state -->
     <div class="empty-state" id="emptyState" style="display:none">
         <div class="empty-icon">
-            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                <circle cx="32" cy="32" r="30" fill="rgba(56,189,248,0.08)" stroke="rgba(56,189,248,0.2)" stroke-width="1.5"/>
-                <path d="M20 36c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="24" cy="26" r="2" fill="#38bdf8"/>
-                <circle cx="40" cy="26" r="2" fill="#38bdf8"/>
-                <path d="M20 42c4-4 20-4 24 0" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
-                <path d="M32 14v-4M32 54v-4M14 32h-4M54 32h-4" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+            <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+                <circle cx="36" cy="36" r="34" fill="rgba(56,189,248,0.07)" stroke="rgba(56,189,248,0.18)" stroke-width="1.5"/>
+                <path d="M22 44c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="28" cy="30" r="2.5" fill="#38bdf8"/>
+                <circle cx="44" cy="30" r="2.5" fill="#38bdf8"/>
+                <path d="M24 50c6-5 18-5 24 0" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
             </svg>
         </div>
-        <h3>No cities yet</h3>
-        <p>Add your first city above to start tracking weather worldwide.</p>
+        <h3>Your library is empty</h3>
+        <p>Add your first city to start building your personal weather library.</p>
     </div>
 
 </main>
 
-<!-- Last refresh indicator -->
 <div class="last-refresh" id="lastRefresh"></div>
+
+<!-- ============ CITY DETAIL PANEL ============ -->
+<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
+<aside class="city-panel" id="cityPanel">
+    <button class="panel-close" onclick="closePanel()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <!-- Hero image -->
+    <div class="panel-hero" id="panelHero">
+        <img id="panelHeroImg" src="" alt="" onerror="this.src='https://picsum.photos/seed/city/900/500'">
+        <div class="panel-hero-overlay"></div>
+        <div class="panel-hero-content">
+            <div class="panel-city-name" id="panelCityName"></div>
+            <div class="panel-city-sub" id="panelCitySub"></div>
+            <div class="panel-avg-badge" id="panelAvgBadge" style="display:none">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span id="panelAvgVal">—</span>
+                <span class="panel-avg-count" id="panelAvgCount"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body">
+
+        <!-- Wiki description -->
+        <p class="panel-wiki" id="panelWiki" style="display:none"></p>
+
+        <!-- Weather strip -->
+        <div class="panel-weather" id="panelWeather"></div>
+
+        <!-- Reviews section -->
+        <div class="panel-section">
+            <div class="panel-section-header">
+                <h3 class="panel-section-title">Community Reviews</h3>
+                <span class="panel-review-count" id="panelReviewCount">0 reviews</span>
+            </div>
+
+            <!-- Write/edit review -->
+            <div class="write-review-box" id="writeReviewBox">
+                <div class="write-review-header" id="writeReviewHeader">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    <span id="writeReviewLabel">Write a Review</span>
+                </div>
+
+                <!-- Rating picker 1-10 -->
+                <div class="rating-section">
+                    <span class="rating-label">Your Rating</span>
+                    <div class="rating-picker" id="ratingPicker">
+                        <!-- filled by JS -->
+                    </div>
+                    <span class="rating-desc" id="ratingDesc">—</span>
+                </div>
+
+                <textarea id="reviewComment" placeholder="Share your thoughts about this city… What makes it special? What's the vibe?" maxlength="500"></textarea>
+                <div class="review-char-count"><span id="charCount">0</span>/500</div>
+
+                <div class="review-actions">
+                    <button class="btn-submit-review" onclick="submitReview()" id="submitReviewBtn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        Post Review
+                    </button>
+                    <button class="btn-delete-review" id="deleteReviewBtn" onclick="deleteMyReview()" style="display:none">Remove Review</button>
+                </div>
+            </div>
+
+            <!-- Reviews list -->
+            <div id="reviewsList" class="reviews-list"></div>
+        </div>
+
+    </div>
+</aside>
 
 <script>
 let allCities = [];
 let unit = "C";
 let currentSort = "default";
-let autoRefreshTimer;
+let selectedRating = 0;
+let currentPanelCity = null;
 
 // ---- Init ----
 window.onload = async function() {
     await loadUser();
     await loadCities();
-    startAutoRefresh();
+    buildRatingPicker();
 };
 
-// ---- Load user info ----
+// ---- Load user ----
 async function loadUser() {
     try {
         const r = await fetch("/get-user");
         if (!r.ok) { window.location.href = "/"; return; }
-        const data = await r.json();
-        const initials = data.username.slice(0, 2).toUpperCase();
-        document.getElementById("userName").textContent = data.username;
-        document.getElementById("userTag").textContent = data.username;
-        document.getElementById("userAvatar").textContent = initials;
-        document.getElementById("statCities").textContent = data.city_count;
-        document.getElementById("statDate").textContent = data.member_since;
+        const d = await r.json();
+        document.getElementById("userName").textContent = d.username;
+        document.getElementById("userTag").textContent = d.username;
+        document.getElementById("userAvatar").textContent = d.username.slice(0,2).toUpperCase();
+        document.getElementById("statCities").textContent = d.city_count;
+        document.getElementById("statDate").textContent = d.member_since;
     } catch(e) {}
 }
 
-// ---- Unit toggle ----
+// ---- Unit ----
 function setUnit(u) {
     unit = u;
-    document.getElementById("btnC").classList.toggle("active", u === "C");
-    document.getElementById("btnF").classList.toggle("active", u === "F");
-    renderCities(allCities);
+    document.getElementById("btnC").classList.toggle("active", u==="C");
+    document.getElementById("btnF").classList.toggle("active", u==="F");
+    renderCities(applySort(allCities, currentSort));
+    if (currentPanelCity) refreshPanelWeather(currentPanelCity);
 }
-
-function toDisplay(tempC) {
-    if (unit === "F") return Math.round(tempC * 9/5 + 32);
-    return tempC;
-}
+function toDisplay(c) { return unit==="F" ? Math.round(c*9/5+32) : c; }
+const unitSym = () => unit==="C" ? "°C" : "°F";
 
 // ---- Load cities ----
-async function loadCities(forceRefresh = false) {
-    const grid = document.getElementById("cityGrid");
-    const statusBar = document.getElementById("statusBar");
-    const emptyState = document.getElementById("emptyState");
-
-    if (forceRefresh) {
+async function loadCities(force=false) {
+    if (force) {
         const icon = document.getElementById("refreshIcon");
         icon.style.animation = "spin 0.8s linear infinite";
         setTimeout(() => icon.style.animation = "", 900);
     }
-
-    setStatus(true, "Fetching live weather data…");
-
+    setStatus(true, "Loading your city library…");
     try {
         const r = await fetch("/get-cities");
-        if (!r.ok) { window.location.href = "/"; return; }
-        const data = await r.json();
-        allCities = data.filter(c => !c.error);
-        updateCityCount(allCities.length);
+        if (!r.ok) { window.location.href="/"; return; }
+        allCities = await r.json();
         renderCities(applySort(allCities, currentSort));
+        document.getElementById("statCities").textContent = allCities.length;
         document.getElementById("lastRefresh").textContent = "Updated " + new Date().toLocaleTimeString();
-    } catch(e) {
-        showToast("Failed to load cities.", "error");
-    }
+    } catch(e) { showToast("Failed to load cities.", "error"); }
     setStatus(false);
 }
 
-// ---- Render city cards ----
+// ---- Render ----
 function renderCities(cities) {
     const grid = document.getElementById("cityGrid");
-    const emptyState = document.getElementById("emptyState");
-    const filterVal = document.getElementById("filterInput").value.trim().toLowerCase();
-    const filtered = filterVal ? cities.filter(c => c.city.toLowerCase().includes(filterVal) || (c.country||"").toLowerCase().includes(filterVal)) : cities;
+    const empty = document.getElementById("emptyState");
+    const fv = document.getElementById("filterInput").value.trim().toLowerCase();
+    const filtered = fv ? cities.filter(c => c.city.toLowerCase().includes(fv) || (c.country||"").toLowerCase().includes(fv)) : cities;
 
     grid.innerHTML = "";
-    emptyState.style.display = filtered.length === 0 ? "block" : "none";
+    empty.style.display = filtered.length === 0 ? "block" : "none";
 
     filtered.forEach((c, i) => {
-        const temp = toDisplay(c.temp);
-        const feelsLike = toDisplay(c.feels_like);
-        const tempMin = toDisplay(c.temp_min);
-        const tempMax = toDisplay(c.temp_max);
-        const unitSym = unit === "C" ? "°C" : "°F";
-        const condClass = getConditionClass(c.weather_main);
+        const t = toDisplay(c.temp);
+        const u = unitSym();
+        const condClass = getCondClass(c.weather_main);
+        const hasRating = c.avg_rating != null;
+        const ratingBadge = hasRating
+            ? `<div class="card-rating-badge">${ratingBadgeIcon()}${c.avg_rating}<span class="card-rating-count">(${c.review_count})</span></div>`
+            : `<div class="card-rating-badge no-rating">No reviews yet</div>`;
+
         const card = document.createElement("div");
         card.className = `city-card ${condClass}`;
-        card.style.animationDelay = `${i * 0.06}s`;
+        card.style.animationDelay = `${i*0.055}s`;
         card.dataset.city = c.city;
+        card.onclick = () => openPanel(c.city);
+
         card.innerHTML = `
-            <div class="card-top">
-                <div class="card-location">
-                    <span class="card-city">${c.city}</span>
-                    <span class="card-country">${c.country || ""}</span>
+            <div class="card-photo-wrap">
+                <img class="card-photo" src="${c.image_url}" alt="${c.city}" loading="lazy"
+                     onerror="this.src='https://picsum.photos/seed/${c.city.replace(' ','')}/600/350'">
+                <div class="card-photo-overlay"></div>
+                <div class="card-photo-top">
+                    <button class="card-delete" onclick="deleteCity('${c.city}',event)" title="Remove">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
                 </div>
-                <button class="card-delete" onclick="deleteCity('${c.city}', event)" title="Remove city">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
-            </div>
-            <div class="card-weather-row">
-                <div class="card-temp">${temp}<span class="unit-sym">${unitSym}</span></div>
-                <img src="${c.icon}" alt="${c.description}" class="weather-icon-img" width="70" height="70">
-            </div>
-            <div class="card-desc">${c.description}</div>
-            <div class="card-minmax">
-                <span class="minmax-item">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-                    ${tempMax}${unitSym}
-                </span>
-                <span class="minmax-sep">·</span>
-                <span class="minmax-item">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-                    ${tempMin}${unitSym}
-                </span>
-            </div>
-            <div class="card-stats">
-                <div class="stat-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-                    <span>Feels ${feelsLike}${unitSym}</span>
+                <div class="card-photo-bottom">
+                    <div class="card-location-badge">
+                        <span class="card-city-name">${c.city}</span>
+                        <span class="card-country-code">${c.country||""}</span>
+                    </div>
+                    ${ratingBadge}
                 </div>
-                <div class="stat-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 22v-4M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M2 12h6M22 12h-4M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/></svg>
-                    <span>${c.humidity}%</span>
+            </div>
+            <div class="card-weather-strip ${condClass}">
+                <img src="${c.icon}" width="44" height="44" alt="">
+                <div class="card-temp-block">
+                    <span class="card-temp-val">${t}${u}</span>
+                    <span class="card-desc-text">${c.description}</span>
                 </div>
-                <div class="stat-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
-                    <span>${c.wind_speed} km/h</span>
+                <div class="card-mini-stats">
+                    <span class="mini-stat">💧 ${c.humidity}%</span>
+                    <span class="mini-stat">💨 ${c.wind_speed}km/h</span>
                 </div>
             </div>
         `;
@@ -264,117 +309,341 @@ function renderCities(cities) {
     });
 }
 
-// ---- Weather condition class ----
-function getConditionClass(main) {
-    const map = {
-        Clear: "cond-clear", Clouds: "cond-clouds", Rain: "cond-rain",
-        Drizzle: "cond-rain", Thunderstorm: "cond-thunder", Snow: "cond-snow",
-        Mist: "cond-mist", Fog: "cond-mist", Haze: "cond-mist",
-    };
-    return map[main] || "cond-default";
+function ratingBadgeIcon() {
+    return `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+}
+
+function getCondClass(main) {
+    const m = {Clear:"cond-clear",Clouds:"cond-clouds",Rain:"cond-rain",Drizzle:"cond-rain",Thunderstorm:"cond-thunder",Snow:"cond-snow",Mist:"cond-mist",Fog:"cond-mist",Haze:"cond-mist"};
+    return m[main] || "cond-default";
 }
 
 // ---- Add city ----
 async function addCity() {
     const input = document.getElementById("cityInput");
     const city = input.value.trim();
-    if (!city) { showToast("Please enter a city name.", "warn"); return; }
-
-    document.getElementById("addBtn").disabled = true;
-    document.getElementById("addBtn").classList.add("loading");
-
+    if (!city) { showToast("Enter a city name.", "warn"); return; }
+    const btn = document.getElementById("addBtn");
+    btn.disabled = true; btn.classList.add("loading");
     try {
-        const r = await fetch("/add-city", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({city}) });
-        const data = await r.json();
-        if (r.ok) {
-            input.value = "";
-            showToast(`${data.weather.city} added!`, "success");
-            await loadCities();
-        } else {
-            showToast(data.message, "error");
-        }
-    } catch(e) { showToast("Network error.", "error"); }
-
-    document.getElementById("addBtn").disabled = false;
-    document.getElementById("addBtn").classList.remove("loading");
+        const r = await fetch("/add-city",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city})});
+        const d = await r.json();
+        if (r.ok) { input.value=""; showToast(`${d.weather.city} added to your library!`,"success"); await loadCities(); }
+        else showToast(d.message,"error");
+    } catch(e) { showToast("Network error.","error"); }
+    btn.disabled=false; btn.classList.remove("loading");
 }
 
 // ---- Delete city ----
 async function deleteCity(city, e) {
     e.stopPropagation();
     const card = document.querySelector(`.city-card[data-city="${city}"]`);
-    if (card) { card.classList.add("removing"); }
+    if (card) card.classList.add("removing");
     setTimeout(async () => {
         try {
-            await fetch("/delete-city", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({city}) });
-            allCities = allCities.filter(c => c.city !== city);
-            updateCityCount(allCities.length);
-            renderCities(applySort(allCities, currentSort));
-            showToast(`${city} removed.`, "info");
+            await fetch("/delete-city",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city})});
+            allCities = allCities.filter(c=>c.city!==city);
+            renderCities(applySort(allCities,currentSort));
+            showToast(`${city} removed.`,"info");
+            if (currentPanelCity===city) closePanel();
         } catch(e) {}
-    }, 300);
+    }, 280);
 }
 
 // ---- Sort ----
 function sortCards(mode) {
     currentSort = mode;
-    document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
-    document.getElementById("sort" + mode.charAt(0).toUpperCase() + mode.slice(1)).classList.add("active");
-    renderCities(applySort(allCities, mode));
+    document.querySelectorAll(".sort-btn").forEach(b=>b.classList.remove("active"));
+    const ids = {default:"sortDefault",hot:"sortHot",cold:"sortCold",rating:"sortRating",az:"sortAZ"};
+    document.getElementById(ids[mode]).classList.add("active");
+    renderCities(applySort(allCities,mode));
 }
-
 function applySort(cities, mode) {
-    const arr = [...cities];
-    if (mode === "hot") arr.sort((a, b) => b.temp - a.temp);
-    else if (mode === "cold") arr.sort((a, b) => a.temp - b.temp);
-    else if (mode === "az") arr.sort((a, b) => a.city.localeCompare(b.city));
-    return arr;
+    const a=[...cities];
+    if (mode==="hot") a.sort((a,b)=>b.temp-a.temp);
+    else if (mode==="cold") a.sort((a,b)=>a.temp-b.temp);
+    else if (mode==="az") a.sort((a,b)=>a.city.localeCompare(b.city));
+    else if (mode==="rating") a.sort((a,b)=>(b.avg_rating||0)-(a.avg_rating||0));
+    return a;
 }
 
 // ---- Filter ----
-function filterCities() {
-    renderCities(applySort(allCities, currentSort));
-}
+function filterCities() { renderCities(applySort(allCities,currentSort)); }
 
-// ---- Update count ----
-function updateCityCount(n) {
-    document.getElementById("statCities").textContent = n;
-}
-
-// ---- Status ----
-function setStatus(show, text = "") {
-    document.getElementById("statusBar").style.display = show ? "flex" : "none";
+// ---- Status / Toast ----
+function setStatus(show,text="") {
+    document.getElementById("statusBar").style.display = show?"flex":"none";
     document.getElementById("statusText").textContent = text;
 }
-
-// ---- Toast ----
-function showToast(msg, type = "info") {
-    const t = document.getElementById("toast");
-    t.textContent = msg;
-    t.className = `toast ${type} show`;
-    clearTimeout(t._timer);
-    t._timer = setTimeout(() => t.className = "toast", 3000);
+function showToast(msg, type="info") {
+    const t=document.getElementById("toast");
+    t.textContent=msg; t.className=`toast ${type} show`;
+    clearTimeout(t._t); t._t=setTimeout(()=>t.className="toast",3200);
 }
 
-// ---- Auto-refresh every 10 mins ----
-function startAutoRefresh() {
-    clearInterval(autoRefreshTimer);
-    autoRefreshTimer = setInterval(() => loadCities(), 10 * 60 * 1000);
+// ============================================
+// PANEL
+// ============================================
+async function openPanel(city) {
+    currentPanelCity = city;
+    const cityData = allCities.find(c=>c.city===city);
+    if (!cityData) return;
+
+    // Reset
+    selectedRating = 0;
+    document.getElementById("reviewComment").value = "";
+    document.getElementById("charCount").textContent = "0";
+    updateRatingPicker(0);
+    document.getElementById("ratingDesc").textContent = "—";
+
+    // Hero
+    document.getElementById("panelHeroImg").src = cityData.image_url;
+    document.getElementById("panelCityName").textContent = cityData.city;
+    document.getElementById("panelCitySub").textContent = cityData.country
+        ? `${cityData.country} · ${cityData.description}` : cityData.description;
+
+    // Wiki
+    const wiki = document.getElementById("panelWiki");
+    if (cityData.wiki_description) {
+        wiki.textContent = cityData.wiki_description;
+        wiki.style.display = "block";
+    } else {
+        wiki.style.display = "none";
+    }
+
+    // Weather strip
+    refreshPanelWeather(cityData);
+
+    // Open panel
+    document.getElementById("cityPanel").classList.add("open");
+    document.getElementById("panelOverlay").classList.add("open");
+    document.body.style.overflow = "hidden";
+
+    // Load reviews
+    await loadReviews(city);
 }
 
-// ---- Enter key to add ----
-document.getElementById("cityInput").addEventListener("keydown", e => {
-    if (e.key === "Enter") addCity();
+function refreshPanelWeather(cityData) {
+    const u = unitSym();
+    document.getElementById("panelWeather").innerHTML = `
+        <div class="pw-main">
+            <img src="${cityData.icon}" width="56" height="56" alt="">
+            <div class="pw-temp">${toDisplay(cityData.temp)}<span>${u}</span></div>
+            <div class="pw-desc">${cityData.description}</div>
+        </div>
+        <div class="pw-grid">
+            <div class="pw-item">
+                <span class="pw-label">Feels Like</span>
+                <span class="pw-val">${toDisplay(cityData.feels_like)}${u}</span>
+            </div>
+            <div class="pw-item">
+                <span class="pw-label">High / Low</span>
+                <span class="pw-val">${toDisplay(cityData.temp_max)}° / ${toDisplay(cityData.temp_min)}°</span>
+            </div>
+            <div class="pw-item">
+                <span class="pw-label">Humidity</span>
+                <span class="pw-val">${cityData.humidity}%</span>
+            </div>
+            <div class="pw-item">
+                <span class="pw-label">Wind</span>
+                <span class="pw-val">${cityData.wind_speed} km/h</span>
+            </div>
+            <div class="pw-item">
+                <span class="pw-label">Visibility</span>
+                <span class="pw-val">${cityData.visibility} km</span>
+            </div>
+            <div class="pw-item">
+                <span class="pw-label">Pressure</span>
+                <span class="pw-val">${cityData.pressure} hPa</span>
+            </div>
+            <div class="pw-item">
+                <span class="pw-label">Sunrise</span>
+                <span class="pw-val">${cityData.sunrise}</span>
+            </div>
+            <div class="pw-item">
+                <span class="pw-label">Sunset</span>
+                <span class="pw-val">${cityData.sunset}</span>
+            </div>
+        </div>
+    `;
+}
+
+function closePanel() {
+    document.getElementById("cityPanel").classList.remove("open");
+    document.getElementById("panelOverlay").classList.remove("open");
+    document.body.style.overflow = "";
+    currentPanelCity = null;
+}
+
+// ---- Load Reviews ----
+async function loadReviews(city) {
+    try {
+        const r = await fetch(`/get-reviews/${encodeURIComponent(city)}`);
+        const d = await r.json();
+
+        // Avg badge
+        const badge = document.getElementById("panelAvgBadge");
+        if (d.avg_rating) {
+            badge.style.display = "flex";
+            document.getElementById("panelAvgVal").textContent = d.avg_rating;
+            document.getElementById("panelAvgCount").textContent = `${d.count} review${d.count!==1?"s":""}`;
+        } else {
+            badge.style.display = "none";
+        }
+
+        document.getElementById("panelReviewCount").textContent =
+            d.count > 0 ? `${d.count} review${d.count!==1?"s":""}` : "No reviews yet";
+
+        // Pre-fill my review if exists
+        const myR = d.my_review;
+        const delBtn = document.getElementById("deleteReviewBtn");
+        const label = document.getElementById("writeReviewLabel");
+        const submitBtn = document.getElementById("submitReviewBtn");
+        if (myR) {
+            selectedRating = myR.rating;
+            updateRatingPicker(myR.rating);
+            document.getElementById("reviewComment").value = myR.comment || "";
+            document.getElementById("charCount").textContent = (myR.comment||"").length;
+            document.getElementById("ratingDesc").textContent = ratingLabel(myR.rating);
+            label.textContent = "Edit Your Review";
+            delBtn.style.display = "flex";
+            submitBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg> Update Review`;
+        } else {
+            label.textContent = "Write a Review";
+            delBtn.style.display = "none";
+            submitBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Post Review`;
+        }
+
+        // Render reviews list
+        const list = document.getElementById("reviewsList");
+        if (d.reviews.length === 0) {
+            list.innerHTML = `<p class="no-reviews-yet">Be the first to review ${city}!</p>`;
+            return;
+        }
+        list.innerHTML = d.reviews.map(rv => {
+            const date = rv.updated_at
+                ? "Edited " + rv.updated_at.slice(0,10)
+                : rv.created_at.slice(0,10);
+            const stars = ratingToStars(rv.rating);
+            return `
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-user-row">
+                        <div class="review-avatar">${rv.username.slice(0,2).toUpperCase()}</div>
+                        <div class="review-user-info">
+                            <span class="review-username">@${rv.username}</span>
+                            <span class="review-date">${date}</span>
+                        </div>
+                    </div>
+                    <div class="review-score-pill score-${scoreColor(rv.rating)}">
+                        ${rv.rating}/10
+                    </div>
+                </div>
+                <div class="review-stars">${stars}</div>
+                ${rv.comment ? `<p class="review-comment">"${rv.comment}"</p>` : ""}
+            </div>`;
+        }).join("");
+
+    } catch(e) { console.error(e); }
+}
+
+// ---- Submit review ----
+async function submitReview() {
+    if (!currentPanelCity) return;
+    if (selectedRating === 0) { showToast("Please select a rating first.", "warn"); return; }
+    const comment = document.getElementById("reviewComment").value.trim();
+    const btn = document.getElementById("submitReviewBtn");
+    btn.disabled = true;
+    try {
+        const r = await fetch("/add-review",{method:"POST",headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({city: currentPanelCity, rating: selectedRating, comment})});
+        const d = await r.json();
+        if (r.ok) {
+            showToast(d.message, "success");
+            // refresh avg on card
+            await loadCities();
+            await loadReviews(currentPanelCity);
+        } else { showToast(d.message, "error"); }
+    } catch(e) { showToast("Network error.", "error"); }
+    btn.disabled = false;
+}
+
+// ---- Delete review ----
+async function deleteMyReview() {
+    if (!currentPanelCity) return;
+    try {
+        await fetch("/delete-review",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city:currentPanelCity})});
+        showToast("Review deleted.", "info");
+        selectedRating = 0;
+        updateRatingPicker(0);
+        document.getElementById("reviewComment").value = "";
+        document.getElementById("charCount").textContent = "0";
+        await loadCities();
+        await loadReviews(currentPanelCity);
+    } catch(e) {}
+}
+
+// ---- Rating Picker ----
+const ratingLabels = ["","Terrible","Poor","Below Average","Mediocre","Average","Decent","Good","Great","Excellent","Perfect"];
+
+function ratingLabel(n) { return ratingLabels[n] || "—"; }
+
+function buildRatingPicker() {
+    const picker = document.getElementById("ratingPicker");
+    picker.innerHTML = "";
+    for (let i = 1; i <= 10; i++) {
+        const btn = document.createElement("button");
+        btn.className = "rating-dot";
+        btn.dataset.val = i;
+        btn.textContent = i;
+        btn.onclick = () => {
+            selectedRating = i;
+            updateRatingPicker(i);
+            document.getElementById("ratingDesc").textContent = ratingLabel(i);
+        };
+        picker.appendChild(btn);
+    }
+}
+
+function updateRatingPicker(val) {
+    document.querySelectorAll(".rating-dot").forEach(btn => {
+        const v = parseInt(btn.dataset.val);
+        btn.classList.toggle("filled", v <= val);
+        btn.classList.toggle("active", v === val);
+    });
+}
+
+function scoreColor(n) {
+    if (n >= 8) return "green";
+    if (n >= 5) return "amber";
+    return "red";
+}
+
+function ratingToStars(n) {
+    const full = Math.round(n / 2);
+    let s = "";
+    for (let i=1;i<=5;i++) {
+        s += `<svg width="13" height="13" viewBox="0 0 24 24" fill="${i<=full?'#fbbf24':'none'}" stroke="#fbbf24" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+    }
+    return s;
+}
+
+// ---- Char count ----
+document.getElementById("reviewComment").addEventListener("input", function() {
+    document.getElementById("charCount").textContent = this.value.length;
 });
 
-// ---- User dropdown toggle ----
+// ---- Enter key ----
+document.getElementById("cityInput").addEventListener("keydown", e => { if(e.key==="Enter") addCity(); });
+
+// ---- Nav user dropdown ----
 document.getElementById("navUser").addEventListener("click", function(e) {
-    this.classList.toggle("open");
-    e.stopPropagation();
+    this.classList.toggle("open"); e.stopPropagation();
 });
-document.addEventListener("click", () => {
-    document.getElementById("navUser").classList.remove("open");
-});
+document.addEventListener("click", () => document.getElementById("navUser").classList.remove("open"));
+
+// ---- Escape closes panel ----
+document.addEventListener("keydown", e => { if(e.key==="Escape") closePanel(); });
 </script>
 </body>
 </html>
