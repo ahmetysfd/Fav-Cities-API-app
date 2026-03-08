@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkyWatch — My City Library</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="dashboard-page">
@@ -21,71 +20,38 @@
 <aside class="filter-sidebar" id="filterSidebar">
     <div class="sidebar-header">
         <span class="sidebar-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
             Filters & Sort
         </span>
         <button class="sidebar-close" onclick="closeSidebar()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
     </div>
-
-    <!-- Search filter -->
     <div class="sidebar-section">
         <div class="sidebar-section-label">Search</div>
         <div class="sidebar-search-wrap">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input id="filterInput" type="text" placeholder="City or country…" oninput="applyFiltersAndRender()" spellcheck="false">
         </div>
     </div>
-
-    <!-- Sort -->
     <div class="sidebar-section">
         <div class="sidebar-section-label">Sort By</div>
         <div class="sidebar-radio-group" id="sortGroup">
-            <label class="sidebar-radio active" data-sort="default">
-                <span class="radio-dot"></span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
-                Date Added
-            </label>
-            <label class="sidebar-radio" data-sort="hot">
-                <span class="radio-dot"></span>
-                🔥 Hottest First
-            </label>
-            <label class="sidebar-radio" data-sort="cold">
-                <span class="radio-dot"></span>
-                ❄️ Coldest First
-            </label>
-            <label class="sidebar-radio" data-sort="rating">
-                <span class="radio-dot"></span>
-                ⭐ Top Rated
-            </label>
-            <label class="sidebar-radio" data-sort="az">
-                <span class="radio-dot"></span>
-                🔤 A – Z
-            </label>
+            <label class="sidebar-radio active" data-sort="default"><span class="radio-dot"></span>📅 Date Added</label>
+            <label class="sidebar-radio" data-sort="hot"><span class="radio-dot"></span>🔥 Hottest First</label>
+            <label class="sidebar-radio" data-sort="cold"><span class="radio-dot"></span>❄️ Coldest First</label>
+            <label class="sidebar-radio" data-sort="rating"><span class="radio-dot"></span>⭐ Top Rated</label>
+            <label class="sidebar-radio" data-sort="az"><span class="radio-dot"></span>🔤 A – Z</label>
         </div>
     </div>
-
-    <!-- Visit Status -->
     <div class="sidebar-section">
         <div class="sidebar-section-label">Visit Status</div>
         <div class="sidebar-radio-group" id="visitGroup">
-            <label class="sidebar-radio active" data-visit="all">
-                <span class="radio-dot"></span>
-                🌍 All Cities
-            </label>
-            <label class="sidebar-radio" data-visit="visited">
-                <span class="radio-dot"></span>
-                ✈️ Visited
-            </label>
-            <label class="sidebar-radio" data-visit="wishlist">
-                <span class="radio-dot"></span>
-                🔖 Wishlist
-            </label>
+            <label class="sidebar-radio active" data-visit="all"><span class="radio-dot"></span>🌍 All Cities</label>
+            <label class="sidebar-radio" data-visit="visited"><span class="radio-dot"></span>✈️ Visited</label>
+            <label class="sidebar-radio" data-visit="wishlist"><span class="radio-dot"></span>🔖 Wishlist</label>
         </div>
     </div>
-
-    <!-- Weather Condition -->
     <div class="sidebar-section">
         <div class="sidebar-section-label">Weather Condition</div>
         <div class="sidebar-chips" id="condChips">
@@ -98,8 +64,6 @@
             <button class="chip" data-cond="Mist">🌫️ Mist</button>
         </div>
     </div>
-
-    <!-- Rating filter -->
     <div class="sidebar-section">
         <div class="sidebar-section-label">Min. Community Rating</div>
         <div class="sidebar-rating-row">
@@ -107,10 +71,8 @@
             <span class="rating-filter-val" id="ratingFilterVal">Any</span>
         </div>
     </div>
-
-    <!-- Reset -->
     <button class="sidebar-reset" onclick="resetFilters()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
         Reset All Filters
     </button>
 </aside>
@@ -118,7 +80,7 @@
 <!-- ===== NAVBAR ===== -->
 <nav class="navbar">
     <div class="nav-left">
-        <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" title="Filters">
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()">
             <span></span><span></span><span></span>
         </button>
         <div class="nav-brand">
@@ -132,30 +94,25 @@
             <span class="brand-name">SkyWatch</span>
         </div>
     </div>
-
     <div class="nav-stats">
-        <div class="nav-stat">
-            <span class="nav-stat-val" id="statCities">—</span>
-            <span class="nav-stat-label">Cities</span>
-        </div>
+        <div class="nav-stat"><span class="nav-stat-val" id="statCities">—</span><span class="nav-stat-label">Cities</span></div>
         <div class="nav-divider"></div>
-        <div class="nav-stat">
-            <span class="nav-stat-val" id="statCountries">—</span>
-            <span class="nav-stat-label">Countries</span>
-        </div>
+        <div class="nav-stat"><span class="nav-stat-val" id="statCountries">—</span><span class="nav-stat-label">Countries</span></div>
         <div class="nav-divider"></div>
-        <div class="nav-stat">
-            <span class="nav-stat-val" id="statVisited">—</span>
-            <span class="nav-stat-label">Visited</span>
-        </div>
+        <div class="nav-stat"><span class="nav-stat-val" id="statVisited">—</span><span class="nav-stat-label">Visited</span></div>
     </div>
-
     <div class="nav-right">
+        <button class="nav-icon-btn compare-toggle-btn" id="compareToggleBtn" onclick="toggleCompareMode()" title="Compare cities">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="3" width="7" height="18"/></svg>
+        </button>
+        <button class="nav-icon-btn" onclick="printJournal()" title="Export journal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </button>
         <div class="unit-toggle">
             <button class="unit-btn active" id="btnC" onclick="setUnit('C')">°C</button>
             <button class="unit-btn" id="btnF" onclick="setUnit('F')">°F</button>
         </div>
-        <button class="refresh-btn" onclick="loadCities(true)" title="Refresh">
+        <button class="refresh-btn" onclick="loadCities(true)">
             <svg id="refreshIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         </button>
         <div class="nav-user" id="navUser">
@@ -164,28 +121,16 @@
                 <span class="user-name" id="userName">Loading…</span>
                 <span class="user-tag">@<span id="userTag">—</span></span>
             </div>
-            <div class="user-dropdown" id="userDropdown">
+            <div class="user-dropdown">
                 <div class="dropdown-stats">
-                    <div class="dropdown-stat-row">
-                        <span>🏙️ Cities in Library</span>
-                        <strong id="dropCities">—</strong>
-                    </div>
-                    <div class="dropdown-stat-row">
-                        <span>🌍 Countries</span>
-                        <strong id="dropCountries">—</strong>
-                    </div>
-                    <div class="dropdown-stat-row">
-                        <span>✈️ Visited</span>
-                        <strong id="dropVisited">—</strong>
-                    </div>
-                    <div class="dropdown-stat-row">
-                        <span>🔖 Wishlist</span>
-                        <strong id="dropWishlist">—</strong>
-                    </div>
+                    <div class="dropdown-stat-row"><span>🏙️ Cities</span><strong id="dropCities">—</strong></div>
+                    <div class="dropdown-stat-row"><span>🌍 Countries</span><strong id="dropCountries">—</strong></div>
+                    <div class="dropdown-stat-row"><span>✈️ Visited</span><strong id="dropVisited">—</strong></div>
+                    <div class="dropdown-stat-row"><span>🔖 Wishlist</span><strong id="dropWishlist">—</strong></div>
                 </div>
                 <div class="dropdown-divider"></div>
                 <a href="/logout" class="dropdown-item logout-item">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                     Sign Out
                 </a>
             </div>
@@ -193,47 +138,125 @@
     </div>
 </nav>
 
-<!-- ===== MAIN ===== -->
-<main class="dash-main">
-    <div class="add-city-bar">
-        <div class="search-input-wrap">
-            <svg class="search-icon-input" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input id="cityInput" type="text" placeholder="Add a city to your library… e.g. Paris, Tokyo" spellcheck="false">
+<!-- ===== PAGE LAYOUT ===== -->
+<div class="page-layout">
+
+    <!-- ===== LEFT COLUMN ===== -->
+    <div class="left-col">
+
+        <!-- Extremes Banner -->
+        <div class="extremes-banner" id="extremesBanner" style="display:none"></div>
+
+        <!-- Add city -->
+        <div class="add-city-bar">
+            <div class="search-input-wrap">
+                <svg class="search-icon-input" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="cityInput" type="text" placeholder="Add a city… e.g. Paris, Tokyo, New York" spellcheck="false">
+            </div>
+            <button class="btn-add" onclick="addCity()" id="addBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add to Library
+            </button>
         </div>
-        <button class="btn-add" onclick="addCity()" id="addBtn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Add to Library
-        </button>
-    </div>
 
-    <!-- Active filter tags -->
-    <div class="active-filters" id="activeFilters"></div>
-
-    <div class="toast" id="toast"></div>
-
-    <div class="status-bar" id="statusBar" style="display:none">
-        <div class="spinner"></div>
-        <span id="statusText">Loading…</span>
-    </div>
-
-    <div id="cityGrid" class="city-grid"></div>
-
-    <div class="empty-state" id="emptyState" style="display:none">
-        <div class="empty-icon">
-            <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
-                <circle cx="36" cy="36" r="34" fill="rgba(56,189,248,0.07)" stroke="rgba(56,189,248,0.18)" stroke-width="1.5"/>
-                <path d="M22 44c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="28" cy="30" r="2.5" fill="#38bdf8"/>
-                <circle cx="44" cy="30" r="2.5" fill="#38bdf8"/>
-                <path d="M24 50c6-5 18-5 24 0" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+        <!-- Compare mode banner -->
+        <div class="compare-banner" id="compareBanner" style="display:none">
+            <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="3" width="7" height="18"/></svg>
+                Compare Mode — select 2 cities
+            </span>
+            <div class="compare-selected" id="compareSelected"></div>
+            <div style="display:flex;gap:8px">
+                <button class="btn-compare-now" id="btnCompareNow" onclick="openComparison()" disabled>Compare →</button>
+                <button class="btn-compare-cancel" onclick="toggleCompareMode()">Cancel</button>
+            </div>
         </div>
-        <h3 id="emptyTitle">Your library is empty</h3>
-        <p id="emptyDesc">Add your first city to start building your personal weather library.</p>
-    </div>
-</main>
 
+        <!-- Active filter tags -->
+        <div class="active-filters" id="activeFilters"></div>
+
+        <!-- Status -->
+        <div class="status-bar" id="statusBar" style="display:none">
+            <div class="spinner"></div>
+            <span id="statusText">Loading…</span>
+        </div>
+
+        <!-- City Grid -->
+        <div id="cityGrid" class="city-grid"></div>
+
+        <!-- Empty state -->
+        <div class="empty-state" id="emptyState" style="display:none">
+            <div class="empty-icon">
+                <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+                    <circle cx="36" cy="36" r="34" fill="rgba(56,189,248,0.07)" stroke="rgba(56,189,248,0.18)" stroke-width="1.5"/>
+                    <path d="M22 44c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="28" cy="30" r="2.5" fill="#38bdf8"/>
+                    <circle cx="44" cy="30" r="2.5" fill="#38bdf8"/>
+                    <path d="M24 50c6-5 18-5 24 0" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h3 id="emptyTitle">Your library is empty</h3>
+            <p id="emptyDesc">Add your first city above to start building your personal weather library.</p>
+        </div>
+    </div>
+
+    <!-- ===== RIGHT COLUMN ===== -->
+    <div class="right-col">
+
+        <!-- Globe Panel -->
+        <div class="globe-panel">
+            <div class="globe-panel-header">
+                <span class="globe-panel-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    Interactive Globe
+                </span>
+                <div class="globe-legend">
+                    <span class="legend-dot green"></span>Visited
+                    <span class="legend-dot amber" style="margin-left:8px"></span>Wishlist
+                </div>
+            </div>
+            <div id="globeContainer" class="globe-container">
+                <div class="globe-loading" id="globeLoading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+            <div class="globe-tooltip" id="globeTooltip"></div>
+            <div class="globe-hint">Drag to rotate · Click pin to explore</div>
+        </div>
+
+        <!-- Countries Panel -->
+        <div class="countries-panel">
+            <div class="countries-header">
+                <span class="countries-title">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                    Countries Explored
+                </span>
+                <span class="countries-count-badge" id="countriesCount">0</span>
+            </div>
+            <div id="countriesList" class="countries-list"></div>
+            <div class="countries-empty" id="countriesEmpty" style="display:none">
+                <p>Add cities to see countries here.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
 <div class="last-refresh" id="lastRefresh"></div>
+
+<!-- ===== COMPARISON MODAL ===== -->
+<div class="modal-overlay" id="comparisonModal" onclick="closeComparison()">
+    <div class="comparison-modal" onclick="event.stopPropagation()">
+        <div class="comparison-modal-header">
+            <h2 class="comparison-title">City Comparison</h2>
+            <button class="comparison-close" onclick="closeComparison()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="comparison-body" id="comparisonBody"></div>
+    </div>
+</div>
 
 <!-- ===== CITY DETAIL PANEL ===== -->
 <div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
@@ -241,8 +264,7 @@
     <button class="panel-close" onclick="closePanel()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
-
-    <div class="panel-hero" id="panelHero">
+    <div class="panel-hero">
         <img id="panelHeroImg" src="" alt="" onerror="this.src='https://picsum.photos/seed/city/900/500'">
         <div class="panel-hero-overlay"></div>
         <div class="panel-hero-content">
@@ -251,32 +273,57 @@
             <div class="panel-city-sub" id="panelCitySub"></div>
             <div class="panel-hero-bottom">
                 <div class="panel-avg-badge" id="panelAvgBadge" style="display:none">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     <span id="panelAvgVal">—</span>
                     <span class="panel-avg-count" id="panelAvgCount"></span>
                 </div>
-                <!-- Visited toggle in panel -->
                 <button class="panel-visited-btn" id="panelVisitedBtn" onclick="toggleVisitedPanel()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.62 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.53 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.5a16 16 0 0 0 6 6l.87-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.62 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.53 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.5a16 16 0 0 0 6 6l.87-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                     <span id="panelVisitedLabel">Mark as Visited</span>
                 </button>
             </div>
         </div>
     </div>
-
     <div class="panel-body">
         <p class="panel-wiki" id="panelWiki" style="display:none"></p>
+
+        <!-- Weather -->
         <div class="panel-weather" id="panelWeather"></div>
 
+        <!-- Forecast Sparkline -->
+        <div class="panel-section forecast-section">
+            <div class="panel-section-header">
+                <h3 class="panel-section-title">24h Forecast</h3>
+                <span class="forecast-loading" id="forecastLoading">Loading…</span>
+            </div>
+            <div id="forecastChart" class="forecast-chart"></div>
+        </div>
+
+        <!-- Personal Notes -->
+        <div class="panel-section notes-section">
+            <div class="panel-section-header">
+                <h3 class="panel-section-title">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    My Private Notes
+                </span>
+                <span class="note-saved-label" id="noteSavedLabel" style="display:none">✓ Saved</span>
+            </div>
+            <textarea id="noteTextarea" class="note-textarea" placeholder="Write private notes about this city… Your thoughts, memories, plans."></textarea>
+            <button class="btn-save-note" onclick="saveNote()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13"/><polyline points="7 3 7 8 15 8"/></svg>
+                Save Note
+            </button>
+        </div>
+
+        <!-- Reviews -->
         <div class="panel-section">
             <div class="panel-section-header">
                 <h3 class="panel-section-title">Community Reviews</h3>
                 <span class="panel-review-count" id="panelReviewCount">0 reviews</span>
             </div>
-
             <div class="write-review-box">
                 <div class="write-review-header">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                     <span id="writeReviewLabel">Write a Review</span>
                 </div>
                 <div class="rating-section">
@@ -288,19 +335,23 @@
                 <div class="review-char-count"><span id="charCount">0</span>/500</div>
                 <div class="review-actions">
                     <button class="btn-submit-review" onclick="submitReview()" id="submitReviewBtn">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                         Post Review
                     </button>
                     <button class="btn-delete-review" id="deleteReviewBtn" onclick="deleteMyReview()" style="display:none">Remove</button>
                 </div>
             </div>
-
             <div id="reviewsList" class="reviews-list"></div>
         </div>
     </div>
 </aside>
 
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+// ============================================================
+// STATE
+// ============================================================
 let allCities = [];
 let unit = "C";
 let currentSort = "default";
@@ -309,28 +360,32 @@ let currentCondFilter = "all";
 let currentMinRating = 0;
 let selectedRating = 0;
 let currentPanelCity = null;
+let compareModeActive = false;
+let compareSelected = [];
+const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
-// ---- Init ----
+// ============================================================
+// INIT
+// ============================================================
 window.onload = async function() {
     await loadUser();
     await loadCities();
     buildRatingPicker();
     initSidebarEvents();
+    initGlobe();
 };
 
-// ---- Load user ----
 async function loadUser() {
     try {
         const r = await fetch("/get-user");
-        if (!r.ok) { window.location.href = "/"; return; }
+        if (!r.ok) { window.location.href="/"; return; }
         const d = await r.json();
         document.getElementById("userName").textContent = d.username;
         document.getElementById("userTag").textContent = d.username;
         document.getElementById("userAvatar").textContent = d.username.slice(0,2).toUpperCase();
         document.getElementById("statCities").textContent = d.city_count;
         document.getElementById("statVisited").textContent = d.visited_count;
-        document.getElementById("statCountries").textContent = d.country_count || "—";
-        // dropdown
+        document.getElementById("statCountries").textContent = d.country_count || 0;
         document.getElementById("dropCities").textContent = d.city_count;
         document.getElementById("dropCountries").textContent = d.country_count || 0;
         document.getElementById("dropVisited").textContent = d.visited_count;
@@ -338,12 +393,15 @@ async function loadUser() {
     } catch(e) {}
 }
 
-// ---- Unit ----
+// ============================================================
+// UNIT
+// ============================================================
 function setUnit(u) {
     unit = u;
     document.getElementById("btnC").classList.toggle("active", u==="C");
     document.getElementById("btnF").classList.toggle("active", u==="F");
     applyFiltersAndRender();
+    updateExtremesBanner();
     if (currentPanelCity) {
         const c = allCities.find(x=>x.city===currentPanelCity);
         if (c) refreshPanelWeather(c);
@@ -352,12 +410,14 @@ function setUnit(u) {
 function toDisplay(c) { return unit==="F" ? Math.round(c*9/5+32) : c; }
 const unitSym = () => unit==="C" ? "°C" : "°F";
 
-// ---- Load cities ----
+// ============================================================
+// LOAD CITIES
+// ============================================================
 async function loadCities(force=false) {
     if (force) {
         const icon = document.getElementById("refreshIcon");
         icon.style.animation = "spin 0.8s linear infinite";
-        setTimeout(() => icon.style.animation = "", 900);
+        setTimeout(() => icon.style.animation="", 900);
     }
     setStatus(true, "Loading your city library…");
     try {
@@ -366,47 +426,129 @@ async function loadCities(force=false) {
         allCities = await r.json();
         updateNavStats();
         applyFiltersAndRender();
+        updateExtremesBanner();
+        updateCountriesList();
+        updateGlobePins();
         document.getElementById("lastRefresh").textContent = "Updated " + new Date().toLocaleTimeString();
     } catch(e) { showToast("Failed to load cities.", "error"); }
     setStatus(false);
 }
 
-// ---- Update nav stats from allCities ----
 function updateNavStats() {
     const countries = new Set(allCities.map(c=>c.country).filter(Boolean));
     const visited = allCities.filter(c=>c.visited).length;
     document.getElementById("statCities").textContent = allCities.length;
     document.getElementById("statCountries").textContent = countries.size;
     document.getElementById("statVisited").textContent = visited;
-    // dropdown
     document.getElementById("dropCities").textContent = allCities.length;
     document.getElementById("dropCountries").textContent = countries.size;
     document.getElementById("dropVisited").textContent = visited;
     document.getElementById("dropWishlist").textContent = allCities.length - visited;
 }
 
-// ---- Compute library badges ----
-function computeBadges(cities) {
-    if (cities.length === 0) return {};
-    const badges = {};
-    const hottest = [...cities].sort((a,b)=>b.temp-a.temp)[0];
-    const coldest = [...cities].sort((a,b)=>a.temp-b.temp)[0];
-    const topRated = [...cities].filter(c=>c.avg_rating).sort((a,b)=>b.avg_rating-a.avg_rating)[0];
-    if (hottest) badges[hottest.city] = (badges[hottest.city]||[]).concat("🔥 Hottest");
-    if (coldest && coldest.city !== hottest?.city) badges[coldest.city] = (badges[coldest.city]||[]).concat("❄️ Coldest");
-    if (topRated) badges[topRated.city] = (badges[topRated.city]||[]).concat("⭐ Top Rated");
-    return badges;
+// ============================================================
+// EXTREMES BANNER
+// ============================================================
+function updateExtremesBanner() {
+    const banner = document.getElementById("extremesBanner");
+    if (allCities.length === 0) { banner.style.display="none"; return; }
+    const hottest = [...allCities].sort((a,b)=>b.temp-a.temp)[0];
+    const coldest = [...allCities].sort((a,b)=>a.temp-b.temp)[0];
+    const windiest = [...allCities].sort((a,b)=>b.wind_speed-a.wind_speed)[0];
+    const humid = [...allCities].sort((a,b)=>b.humidity-a.humidity)[0];
+    banner.style.display = "flex";
+    banner.innerHTML = `
+        <div class="extreme-item" onclick="openPanel('${hottest.city}')">
+            <span class="extreme-emoji">🔥</span>
+            <div><div class="extreme-label">Hottest</div><div class="extreme-val">${hottest.city} · ${toDisplay(hottest.temp)}${unitSym()}</div></div>
+        </div>
+        <div class="extreme-div"></div>
+        <div class="extreme-item" onclick="openPanel('${coldest.city}')">
+            <span class="extreme-emoji">❄️</span>
+            <div><div class="extreme-label">Coldest</div><div class="extreme-val">${coldest.city} · ${toDisplay(coldest.temp)}${unitSym()}</div></div>
+        </div>
+        <div class="extreme-div"></div>
+        <div class="extreme-item" onclick="openPanel('${windiest.city}')">
+            <span class="extreme-emoji">💨</span>
+            <div><div class="extreme-label">Windiest</div><div class="extreme-val">${windiest.city} · ${windiest.wind_speed} km/h</div></div>
+        </div>
+        <div class="extreme-div"></div>
+        <div class="extreme-item" onclick="openPanel('${humid.city}')">
+            <span class="extreme-emoji">💧</span>
+            <div><div class="extreme-label">Most Humid</div><div class="extreme-val">${humid.city} · ${humid.humidity}%</div></div>
+        </div>`;
 }
 
-// ---- Apply all filters + render ----
+// ============================================================
+// COUNTRIES LIST
+// ============================================================
+function flagEmoji(code) {
+    if (!code || code.length!==2) return '🌍';
+    return code.toUpperCase().replace(/./g, c => String.fromCodePoint(c.charCodeAt(0)+127397));
+}
+function countryName(code) {
+    try { return regionNames.of(code); } catch(e) { return code; }
+}
+
+function updateCountriesList() {
+    const map = {};
+    allCities.forEach(c => {
+        if (!c.country) return;
+        if (!map[c.country]) map[c.country] = { code: c.country, cities: [] };
+        map[c.country].cities.push(c);
+    });
+    const countries = Object.values(map).sort((a,b) => b.cities.length - a.cities.length);
+    document.getElementById("countriesCount").textContent = countries.length;
+    const empty = document.getElementById("countriesEmpty");
+    const list = document.getElementById("countriesList");
+    if (countries.length === 0) { empty.style.display="block"; list.innerHTML=""; return; }
+    empty.style.display = "none";
+    list.innerHTML = countries.map(co => {
+        const flag = flagEmoji(co.code);
+        const name = countryName(co.code);
+        const visited = co.cities.filter(c=>c.visited).length;
+        return `<div class="country-item" onclick="filterByCountry('${co.code}')">
+            <span class="country-flag">${flag}</span>
+            <div class="country-info">
+                <span class="country-name-text">${name}</span>
+                <span class="country-sub">${co.cities.length} cit${co.cities.length>1?"ies":"y"} · ${visited} visited</span>
+            </div>
+            <div class="country-dots">
+                ${co.cities.slice(0,4).map(c=>`<div class="country-dot ${c.visited?'visited':'wishlist'}"></div>`).join('')}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function filterByCountry(code) {
+    document.getElementById("filterInput").value = countryName(code);
+    applyFiltersAndRender();
+    if (window.innerWidth < 1100) closeSidebar();
+}
+
+// ============================================================
+// RENDER CARDS
+// ============================================================
+function computeBadges() {
+    if (allCities.length===0) return {};
+    const b = {};
+    const h = [...allCities].sort((a,bx)=>bx.temp-a.temp)[0];
+    const c = [...allCities].sort((a,bx)=>a.temp-bx.temp)[0];
+    const t = [...allCities].filter(x=>x.avg_rating).sort((a,bx)=>bx.avg_rating-a.avg_rating)[0];
+    if (h) b[h.city] = (b[h.city]||[]).concat("🔥 Hottest");
+    if (c && c.city!==h?.city) b[c.city] = (b[c.city]||[]).concat("❄️ Coldest");
+    if (t) b[t.city] = (b[t.city]||[]).concat("⭐ Top Rated");
+    return b;
+}
+
 function applyFiltersAndRender() {
     let cities = [...allCities];
     const fv = document.getElementById("filterInput").value.trim().toLowerCase();
-    if (fv) cities = cities.filter(c=>c.city.toLowerCase().includes(fv)||(c.country||"").toLowerCase().includes(fv));
+    if (fv) cities = cities.filter(c=>c.city.toLowerCase().includes(fv)||(c.country||"").toLowerCase().includes(fv)||(countryName(c.country)||"").toLowerCase().includes(fv));
     if (currentVisitFilter==="visited") cities = cities.filter(c=>c.visited);
     if (currentVisitFilter==="wishlist") cities = cities.filter(c=>!c.visited);
     if (currentCondFilter!=="all") cities = cities.filter(c=>c.weather_main===currentCondFilter);
-    if (currentMinRating > 0) cities = cities.filter(c=>(c.avg_rating||0)>=currentMinRating);
+    if (currentMinRating>0) cities = cities.filter(c=>(c.avg_rating||0)>=currentMinRating);
     cities = applySort(cities, currentSort);
     renderCities(cities);
     renderActiveFilterTags();
@@ -421,63 +563,55 @@ function applySort(cities, mode) {
     return a;
 }
 
-// ---- Render ----
 function renderCities(cities) {
     const grid = document.getElementById("cityGrid");
     const empty = document.getElementById("emptyState");
-    const badges = computeBadges(allCities);
-
+    const badges = computeBadges();
     grid.innerHTML = "";
     empty.style.display = cities.length===0 ? "block" : "none";
-
     if (cities.length===0 && allCities.length>0) {
         document.getElementById("emptyTitle").textContent = "No cities match your filters";
-        document.getElementById("emptyDesc").textContent = "Try adjusting the filters in the sidebar.";
+        document.getElementById("emptyDesc").textContent = "Try adjusting filters in the sidebar.";
     } else {
         document.getElementById("emptyTitle").textContent = "Your library is empty";
         document.getElementById("emptyDesc").textContent = "Add your first city to start building your personal weather library.";
     }
-
     cities.forEach((c, i) => {
-        const t = toDisplay(c.temp);
-        const u = unitSym();
+        const t = toDisplay(c.temp); const u = unitSym();
         const condClass = getCondClass(c.weather_main);
         const cityBadges = badges[c.city] || [];
-        const hasRating = c.avg_rating!=null;
-        const ratingBadge = hasRating
+        const rBadge = c.avg_rating!=null
             ? `<div class="card-rating-badge">${starSvg()}${c.avg_rating}<span class="card-rating-count">(${c.review_count})</span></div>`
             : `<div class="card-rating-badge no-rating">No reviews</div>`;
-
-        const visitedTag = c.visited
+        const visitTag = c.visited
             ? `<div class="card-visited-tag visited-yes">✈️ Visited</div>`
             : `<div class="card-visited-tag visited-no">🔖 Wishlist</div>`;
-
-        const libraryBadges = cityBadges.map(b=>`<span class="card-lib-badge">${b}</span>`).join("");
-
+        const libBadges = cityBadges.map(b=>`<span class="card-lib-badge">${b}</span>`).join("");
+        const isSelected = compareSelected.includes(c.city);
         const card = document.createElement("div");
-        card.className = `city-card ${condClass}`;
-        card.style.animationDelay = `${i*0.055}s`;
+        card.className = `city-card ${condClass}${compareModeActive?" compare-mode":""}${isSelected?" compare-selected":""}`;
+        card.style.animationDelay = `${i*0.05}s`;
         card.dataset.city = c.city;
-        card.onclick = () => openPanel(c.city);
-
+        card.onclick = () => compareModeActive ? toggleCompareSelect(c.city) : openPanel(c.city);
         card.innerHTML = `
             <div class="card-photo-wrap">
                 <img class="card-photo" src="${c.image_url}" alt="${c.city}" loading="lazy"
                      onerror="this.src='https://picsum.photos/seed/${c.city.replace(' ','')}/600/350'">
                 <div class="card-photo-overlay"></div>
                 <div class="card-photo-top">
-                    ${visitedTag}
+                    ${visitTag}
                     <button class="card-delete" onclick="deleteCity('${c.city}',event)" title="Remove">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                 </div>
-                ${libraryBadges ? `<div class="card-lib-badges">${libraryBadges}</div>` : ""}
+                ${libBadges ? `<div class="card-lib-badges">${libBadges}</div>` : ""}
+                ${isSelected ? `<div class="compare-check">✓</div>` : ""}
                 <div class="card-photo-bottom">
                     <div class="card-location-badge">
                         <span class="card-city-name">${c.city}</span>
                         <span class="card-country-code">${c.country||""}</span>
                     </div>
-                    ${ratingBadge}
+                    ${rBadge}
                 </div>
             </div>
             <div class="card-weather-strip ${condClass}">
@@ -490,8 +624,7 @@ function renderCities(cities) {
                     <span class="mini-stat">💧 ${c.humidity}%</span>
                     <span class="mini-stat">💨 ${c.wind_speed}km/h</span>
                 </div>
-            </div>
-        `;
+            </div>`;
         grid.appendChild(card);
     });
 }
@@ -499,80 +632,9 @@ function renderCities(cities) {
 function starSvg(){return `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;}
 function getCondClass(main){const m={Clear:"cond-clear",Clouds:"cond-clouds",Rain:"cond-rain",Drizzle:"cond-rain",Thunderstorm:"cond-thunder",Snow:"cond-snow",Mist:"cond-mist",Fog:"cond-mist",Haze:"cond-mist"};return m[main]||"cond-default";}
 
-// ---- Active filter tags ----
-function renderActiveFilterTags() {
-    const el = document.getElementById("activeFilters");
-    const tags = [];
-    const fv = document.getElementById("filterInput").value.trim();
-    if (fv) tags.push({label:`"${fv}"`, clear:()=>{document.getElementById("filterInput").value="";applyFiltersAndRender();}});
-    if (currentVisitFilter!=="all") tags.push({label: currentVisitFilter==="visited"?"✈️ Visited":"🔖 Wishlist", clear:()=>{currentVisitFilter="all";document.querySelector('[data-visit="all"]').click();}});
-    if (currentCondFilter!=="all") tags.push({label:currentCondFilter, clear:()=>{currentCondFilter="all";document.querySelector('[data-cond="all"]').click();}});
-    if (currentMinRating>0) tags.push({label:`⭐ ≥${currentMinRating}`, clear:()=>{currentMinRating=0;document.getElementById("ratingFilter").value=0;onRatingFilterChange(0);}});
-    el.innerHTML = tags.map((t,i)=>`<span class="active-filter-tag">${t.label}<button onclick="clearTag(${i})">×</button></span>`).join("");
-    el._tagClears = tags.map(t=>t.clear);
-}
-function clearTag(i){document.getElementById("activeFilters")._tagClears[i]();}
-
-// ---- Sidebar ----
-function toggleSidebar(){
-    const open = document.getElementById("filterSidebar").classList.toggle("open");
-    document.getElementById("sidebarOverlay").classList.toggle("open", open);
-    document.getElementById("hamburgerBtn").classList.toggle("active", open);
-}
-function closeSidebar(){
-    document.getElementById("filterSidebar").classList.remove("open");
-    document.getElementById("sidebarOverlay").classList.remove("open");
-    document.getElementById("hamburgerBtn").classList.remove("active");
-}
-
-function initSidebarEvents() {
-    // Sort
-    document.querySelectorAll("#sortGroup .sidebar-radio").forEach(el=>{
-        el.addEventListener("click",()=>{
-            document.querySelectorAll("#sortGroup .sidebar-radio").forEach(x=>x.classList.remove("active"));
-            el.classList.add("active");
-            currentSort = el.dataset.sort;
-            applyFiltersAndRender();
-        });
-    });
-    // Visit filter
-    document.querySelectorAll("#visitGroup .sidebar-radio").forEach(el=>{
-        el.addEventListener("click",()=>{
-            document.querySelectorAll("#visitGroup .sidebar-radio").forEach(x=>x.classList.remove("active"));
-            el.classList.add("active");
-            currentVisitFilter = el.dataset.visit;
-            applyFiltersAndRender();
-        });
-    });
-    // Condition chips
-    document.querySelectorAll("#condChips .chip").forEach(el=>{
-        el.addEventListener("click",()=>{
-            document.querySelectorAll("#condChips .chip").forEach(x=>x.classList.remove("active"));
-            el.classList.add("active");
-            currentCondFilter = el.dataset.cond;
-            applyFiltersAndRender();
-        });
-    });
-}
-
-function onRatingFilterChange(val){
-    currentMinRating = parseInt(val);
-    document.getElementById("ratingFilterVal").textContent = val>0?`${val}+`:"Any";
-    applyFiltersAndRender();
-}
-
-function resetFilters(){
-    document.getElementById("filterInput").value="";
-    currentSort="default"; currentVisitFilter="all"; currentCondFilter="all"; currentMinRating=0;
-    document.getElementById("ratingFilter").value=0;
-    document.getElementById("ratingFilterVal").textContent="Any";
-    document.querySelectorAll("#sortGroup .sidebar-radio").forEach((el,i)=>el.classList.toggle("active",i===0));
-    document.querySelectorAll("#visitGroup .sidebar-radio").forEach((el,i)=>el.classList.toggle("active",i===0));
-    document.querySelectorAll("#condChips .chip").forEach((el,i)=>el.classList.toggle("active",i===0));
-    applyFiltersAndRender();
-}
-
-// ---- Add city ----
+// ============================================================
+// ADD / DELETE CITY
+// ============================================================
 async function addCity() {
     const input = document.getElementById("cityInput");
     const city = input.value.trim();
@@ -582,13 +644,12 @@ async function addCity() {
     try {
         const r = await fetch("/add-city",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city})});
         const d = await r.json();
-        if (r.ok) { input.value=""; showToast(`${d.weather.city} added!`,"success"); await loadCities(); }
+        if (r.ok) { input.value=""; showToast(`${d.weather.city} added to your library!`,"success"); await loadCities(); }
         else showToast(d.message,"error");
     } catch(e) { showToast("Network error.","error"); }
     btn.disabled=false; btn.classList.remove("loading");
 }
 
-// ---- Delete city ----
 async function deleteCity(city, e) {
     e.stopPropagation();
     const card = document.querySelector(`.city-card[data-city="${city}"]`);
@@ -597,72 +658,368 @@ async function deleteCity(city, e) {
         try {
             await fetch("/delete-city",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city})});
             allCities = allCities.filter(c=>c.city!==city);
-            updateNavStats();
-            applyFiltersAndRender();
+            updateNavStats(); applyFiltersAndRender(); updateExtremesBanner(); updateCountriesList(); updateGlobePins();
             showToast(`${city} removed.`,"info");
             if(currentPanelCity===city) closePanel();
         } catch(e){}
     }, 280);
 }
 
-// ---- Toggle visited ----
+// ============================================================
+// VISITED TOGGLE
+// ============================================================
 async function toggleVisited(city) {
     try {
         const r = await fetch("/toggle-visited",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city})});
         const d = await r.json();
         const idx = allCities.findIndex(c=>c.city===city);
         if (idx>=0) allCities[idx].visited = d.visited;
-        updateNavStats();
-        applyFiltersAndRender();
+        updateNavStats(); applyFiltersAndRender(); updateCountriesList(); updateGlobePins();
         showToast(d.visited ? `${city} marked as Visited ✈️` : `${city} moved to Wishlist 🔖`, "success");
-        // update panel button if open
         if (currentPanelCity===city) updatePanelVisitedBtn(d.visited);
-    } catch(e) {}
+    } catch(e){}
 }
-
-async function toggleVisitedPanel() {
-    if (currentPanelCity) await toggleVisited(currentPanelCity);
-}
+async function toggleVisitedPanel() { if(currentPanelCity) await toggleVisited(currentPanelCity); }
 function updatePanelVisitedBtn(visited) {
-    const btn = document.getElementById("panelVisitedBtn");
-    const label = document.getElementById("panelVisitedLabel");
-    btn.classList.toggle("is-visited", visited);
-    label.textContent = visited ? "✈️ Visited!" : "Mark as Visited";
+    document.getElementById("panelVisitedBtn").classList.toggle("is-visited", visited);
+    document.getElementById("panelVisitedLabel").textContent = visited ? "✈️ Visited!" : "Mark as Visited";
 }
 
-// ---- Status / Toast ----
-function setStatus(show,text=""){document.getElementById("statusBar").style.display=show?"flex":"none";document.getElementById("statusText").textContent=text;}
+// ============================================================
+// COMPARE MODE
+// ============================================================
+function toggleCompareMode() {
+    compareModeActive = !compareModeActive;
+    compareSelected = [];
+    document.getElementById("compareToggleBtn").classList.toggle("active", compareModeActive);
+    document.getElementById("compareBanner").style.display = compareModeActive ? "flex" : "none";
+    applyFiltersAndRender();
+}
+
+function toggleCompareSelect(city) {
+    const idx = compareSelected.indexOf(city);
+    if (idx>=0) { compareSelected.splice(idx, 1); }
+    else if (compareSelected.length < 2) { compareSelected.push(city); }
+    else { showToast("Select only 2 cities to compare.", "warn"); return; }
+    document.getElementById("btnCompareNow").disabled = compareSelected.length!==2;
+    document.getElementById("compareSelected").innerHTML = compareSelected.map(c=>`<span class="compare-pill">${c}</span>`).join("<span style='color:var(--text-3)'>vs</span>");
+    applyFiltersAndRender();
+}
+
+function openComparison() {
+    if (compareSelected.length!==2) return;
+    const [c1, c2] = compareSelected.map(name => allCities.find(c=>c.city===name));
+    if (!c1||!c2) return;
+    const u = unitSym();
+    const stats = [
+        {label:"🌡️ Temperature", v1:`${toDisplay(c1.temp)}${u}`, v2:`${toDisplay(c2.temp)}${u}`, win: c1.temp>c2.temp?0:1},
+        {label:"🌡️ Feels Like", v1:`${toDisplay(c1.feels_like)}${u}`, v2:`${toDisplay(c2.feels_like)}${u}`, win:-1},
+        {label:"⬆️ High / ⬇️ Low", v1:`${toDisplay(c1.temp_max)}° / ${toDisplay(c1.temp_min)}°`, v2:`${toDisplay(c2.temp_max)}° / ${toDisplay(c2.temp_min)}°`, win:-1},
+        {label:"💧 Humidity", v1:`${c1.humidity}%`, v2:`${c2.humidity}%`, win: c1.humidity<c2.humidity?0:1},
+        {label:"💨 Wind Speed", v1:`${c1.wind_speed} km/h`, v2:`${c2.wind_speed} km/h`, win: c1.wind_speed<c2.wind_speed?0:1},
+        {label:"👁️ Visibility", v1:`${c1.visibility} km`, v2:`${c2.visibility} km`, win: c1.visibility>c2.visibility?0:1},
+        {label:"🔵 Pressure", v1:`${c1.pressure} hPa`, v2:`${c2.pressure} hPa`, win:-1},
+        {label:"⭐ Avg Rating", v1: c1.avg_rating?`${c1.avg_rating}/10`:"No reviews", v2: c2.avg_rating?`${c2.avg_rating}/10`:"No reviews", win: (c1.avg_rating||0)>(c2.avg_rating||0)?0:1},
+        {label:"🌅 Sunrise", v1:c1.sunrise, v2:c2.sunrise, win:-1},
+        {label:"🌇 Sunset", v1:c1.sunset, v2:c2.sunset, win:-1},
+    ];
+    document.getElementById("comparisonBody").innerHTML = `
+        <div class="comparison-cities">
+            <div class="comp-city">
+                <img class="comp-photo" src="${c1.image_url}" alt="${c1.city}" onerror="this.src='https://picsum.photos/seed/${c1.city}/400/200'">
+                <div class="comp-city-info">
+                    <div class="comp-city-name">${c1.city}</div>
+                    <div class="comp-city-country">${flagEmoji(c1.country)} ${countryName(c1.country)}</div>
+                    <img src="${c1.icon}" width="40" height="40">
+                </div>
+            </div>
+            <div class="comp-vs">VS</div>
+            <div class="comp-city">
+                <img class="comp-photo" src="${c2.image_url}" alt="${c2.city}" onerror="this.src='https://picsum.photos/seed/${c2.city}/400/200'">
+                <div class="comp-city-info">
+                    <div class="comp-city-name">${c2.city}</div>
+                    <div class="comp-city-country">${flagEmoji(c2.country)} ${countryName(c2.country)}</div>
+                    <img src="${c2.icon}" width="40" height="40">
+                </div>
+            </div>
+        </div>
+        <div class="comparison-table">
+            ${stats.map(s=>`
+            <div class="comp-row">
+                <div class="comp-stat-label">${s.label}</div>
+                <div class="comp-val ${s.win===0?'comp-winner':''}">${s.v1}</div>
+                <div class="comp-val ${s.win===1?'comp-winner':''}">${s.v2}</div>
+            </div>`).join('')}
+        </div>`;
+    document.getElementById("comparisonModal").classList.add("open");
+    document.body.style.overflow="hidden";
+}
+function closeComparison() {
+    document.getElementById("comparisonModal").classList.remove("open");
+    document.body.style.overflow="";
+}
+
+// ============================================================
+// PRINT JOURNAL
+// ============================================================
+function printJournal() {
+    window.print();
+}
+
+// ============================================================
+// FILTERS / SIDEBAR
+// ============================================================
+function renderActiveFilterTags() {
+    const el = document.getElementById("activeFilters");
+    const tags = [];
+    const fv = document.getElementById("filterInput").value.trim();
+    if (fv) tags.push({label:`"${fv}"`, clear:()=>{document.getElementById("filterInput").value="";applyFiltersAndRender();}});
+    if (currentVisitFilter!=="all") tags.push({label:currentVisitFilter==="visited"?"✈️ Visited":"🔖 Wishlist", clear:()=>{currentVisitFilter="all";document.querySelector('[data-visit="all"]').click();}});
+    if (currentCondFilter!=="all") tags.push({label:currentCondFilter, clear:()=>{currentCondFilter="all";document.querySelector('[data-cond="all"]').click();}});
+    if (currentMinRating>0) tags.push({label:`⭐ ≥${currentMinRating}`, clear:()=>{currentMinRating=0;document.getElementById("ratingFilter").value=0;onRatingFilterChange(0);}});
+    el.innerHTML = tags.map((t,i)=>`<span class="active-filter-tag">${t.label}<button onclick="clearTag(${i})">×</button></span>`).join("");
+    el._tagClears = tags.map(t=>t.clear);
+}
+function clearTag(i){document.getElementById("activeFilters")._tagClears[i]();}
+
+function toggleSidebar(){const open=document.getElementById("filterSidebar").classList.toggle("open");document.getElementById("sidebarOverlay").classList.toggle("open",open);document.getElementById("hamburgerBtn").classList.toggle("active",open);}
+function closeSidebar(){document.getElementById("filterSidebar").classList.remove("open");document.getElementById("sidebarOverlay").classList.remove("open");document.getElementById("hamburgerBtn").classList.remove("active");}
+
+function initSidebarEvents(){
+    document.querySelectorAll("#sortGroup .sidebar-radio").forEach(el=>{
+        el.addEventListener("click",()=>{document.querySelectorAll("#sortGroup .sidebar-radio").forEach(x=>x.classList.remove("active"));el.classList.add("active");currentSort=el.dataset.sort;applyFiltersAndRender();});
+    });
+    document.querySelectorAll("#visitGroup .sidebar-radio").forEach(el=>{
+        el.addEventListener("click",()=>{document.querySelectorAll("#visitGroup .sidebar-radio").forEach(x=>x.classList.remove("active"));el.classList.add("active");currentVisitFilter=el.dataset.visit;applyFiltersAndRender();});
+    });
+    document.querySelectorAll("#condChips .chip").forEach(el=>{
+        el.addEventListener("click",()=>{document.querySelectorAll("#condChips .chip").forEach(x=>x.classList.remove("active"));el.classList.add("active");currentCondFilter=el.dataset.cond;applyFiltersAndRender();});
+    });
+}
+function onRatingFilterChange(val){currentMinRating=parseInt(val);document.getElementById("ratingFilterVal").textContent=val>0?`${val}+`:"Any";applyFiltersAndRender();}
+function resetFilters(){
+    document.getElementById("filterInput").value="";
+    currentSort="default";currentVisitFilter="all";currentCondFilter="all";currentMinRating=0;
+    document.getElementById("ratingFilter").value=0;document.getElementById("ratingFilterVal").textContent="Any";
+    document.querySelectorAll("#sortGroup .sidebar-radio").forEach((el,i)=>el.classList.toggle("active",i===0));
+    document.querySelectorAll("#visitGroup .sidebar-radio").forEach((el,i)=>el.classList.toggle("active",i===0));
+    document.querySelectorAll("#condChips .chip").forEach((el,i)=>el.classList.toggle("active",i===0));
+    applyFiltersAndRender();
+}
+
+function setStatus(s,t=""){document.getElementById("statusBar").style.display=s?"flex":"none";document.getElementById("statusText").textContent=t;}
 function showToast(msg,type="info"){const t=document.getElementById("toast");t.textContent=msg;t.className=`toast ${type} show`;clearTimeout(t._t);t._t=setTimeout(()=>t.className="toast",3200);}
 
-// ============================================
-// PANEL
-// ============================================
-async function openPanel(city) {
-    currentPanelCity = city;
-    const cityData = allCities.find(c=>c.city===city);
-    if (!cityData) return;
+// ============================================================
+// 3D GLOBE
+// ============================================================
+let scene, camera, renderer, globeGroup, globePinMeshes = [], autoRotate = true;
+let velX=0, velY=0, isDragging=false, wasDragging=false, prevMouse={x:0,y:0};
+const GLOBE_R = 1.5;
 
+function initGlobe() {
+    const container = document.getElementById("globeContainer");
+    const W = container.clientWidth, H = container.clientHeight;
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 100);
+    camera.position.z = 3.6;
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(W, H);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+    document.getElementById("globeLoading").style.display = "none";
+
+    globeGroup = new THREE.Group();
+    scene.add(globeGroup);
+
+    // Earth sphere - stylized dark with texture attempt
+    const earthMat = new THREE.MeshPhongMaterial({
+        color: 0x0d2d4a, emissive: 0x050e1a, specular: 0x1a4a80, shininess: 12
+    });
+    const earthMesh = new THREE.Mesh(new THREE.SphereGeometry(GLOBE_R, 64, 64), earthMat);
+    globeGroup.add(earthMesh);
+
+    // Try loading texture
+    new THREE.TextureLoader().load(
+        "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/textures/planets/earth_atmos_2048.jpg",
+        (tex) => { earthMat.map=tex; earthMat.color=new THREE.Color(0xffffff); earthMat.needsUpdate=true; }
+    );
+
+    // Grid lines
+    const gridMat = new THREE.LineBasicMaterial({ color: 0x1a4a6e, transparent: true, opacity: 0.35 });
+    for (let lat=-80; lat<=80; lat+=20) {
+        const pts=[];
+        for (let lon=0; lon<=360; lon+=3) pts.push(latLonToVec3(lat, lon, GLOBE_R+0.001));
+        globeGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), gridMat));
+    }
+    for (let lon=0; lon<360; lon+=20) {
+        const pts=[];
+        for (let lat=-90; lat<=90; lat+=3) pts.push(latLonToVec3(lat, lon, GLOBE_R+0.001));
+        globeGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), gridMat));
+    }
+
+    // Atmosphere glow
+    globeGroup.add(new THREE.Mesh(
+        new THREE.SphereGeometry(GLOBE_R*1.05, 32, 32),
+        new THREE.MeshPhongMaterial({ color:0x38bdf8, transparent:true, opacity:0.055, side:THREE.BackSide })
+    ));
+    globeGroup.add(new THREE.Mesh(
+        new THREE.SphereGeometry(GLOBE_R*1.12, 32, 32),
+        new THREE.MeshPhongMaterial({ color:0x38bdf8, transparent:true, opacity:0.022, side:THREE.BackSide })
+    ));
+
+    // Stars
+    const starPos = [];
+    for (let i=0; i<1800; i++) starPos.push((Math.random()-.5)*200,(Math.random()-.5)*200,(Math.random()-.5)*200);
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute("position", new THREE.Float32BufferAttribute(starPos, 3));
+    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color:0xffffff,size:0.12,transparent:true,opacity:0.55})));
+
+    // Lighting
+    scene.add(new THREE.AmbientLight(0x405070, 2));
+    const dl = new THREE.DirectionalLight(0xffffff, 1.8);
+    dl.position.set(5,3,5); scene.add(dl);
+
+    // Mouse events
+    const el = renderer.domElement;
+    el.addEventListener("mousedown", e=>{isDragging=true;wasDragging=false;autoRotate=false;prevMouse={x:e.clientX,y:e.clientY};});
+    window.addEventListener("mousemove", e=>{
+        if(!isDragging)return;
+        wasDragging=true;
+        velX+=(e.clientY-prevMouse.y)*0.0028;
+        velY+=(e.clientX-prevMouse.x)*0.0028;
+        prevMouse={x:e.clientX,y:e.clientY};
+    });
+    window.addEventListener("mouseup",()=>{isDragging=false;setTimeout(()=>autoRotate=true,2800);});
+
+    // Touch
+    el.addEventListener("touchstart",e=>{const t=e.touches[0];isDragging=true;wasDragging=false;autoRotate=false;prevMouse={x:t.clientX,y:t.clientY};},{passive:true});
+    el.addEventListener("touchmove",e=>{if(!isDragging)return;wasDragging=true;const t=e.touches[0];velX+=(t.clientY-prevMouse.y)*0.003;velY+=(t.clientX-prevMouse.x)*0.003;prevMouse={x:t.clientX,y:t.clientY};},{passive:true});
+    el.addEventListener("touchend",()=>{isDragging=false;setTimeout(()=>autoRotate=true,2800);});
+
+    // Click pin
+    el.addEventListener("click", e=>{
+        if(wasDragging)return;
+        const rect=el.getBoundingClientRect();
+        const mouse=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);
+        const ray=new THREE.Raycaster();ray.setFromCamera(mouse,camera);
+        const hits=ray.intersectObjects(globePinMeshes);
+        if(hits.length>0){openPanel(hits[0].object.userData.city);}
+    });
+
+    // Hover tooltip
+    el.addEventListener("mousemove", e=>{
+        if(isDragging)return;
+        const rect=el.getBoundingClientRect();
+        const mouse=new THREE.Vector2(((e.clientX-rect.left)/rect.width)*2-1,-((e.clientY-rect.top)/rect.height)*2+1);
+        const ray=new THREE.Raycaster();ray.setFromCamera(mouse,camera);
+        const hits=ray.intersectObjects(globePinMeshes);
+        if(hits.length>0){
+            el.style.cursor="pointer";
+            const c=allCities.find(x=>x.city===hits[0].object.userData.city);
+            if(c) showGlobeTooltip(`${c.city} ${toDisplay(c.temp)}${unitSym()}`, e.clientX, e.clientY);
+        } else {
+            el.style.cursor="grab";
+            hideGlobeTooltip();
+        }
+    });
+    el.addEventListener("mouseleave", hideGlobeTooltip);
+
+    // Resize
+    window.addEventListener("resize",()=>{
+        if(!renderer)return;
+        const W2=container.clientWidth,H2=container.clientHeight;
+        camera.aspect=W2/H2;camera.updateProjectionMatrix();
+        renderer.setSize(W2,H2);
+    });
+
+    animateGlobe();
+}
+
+function animateGlobe() {
+    requestAnimationFrame(animateGlobe);
+    if(autoRotate) globeGroup.rotation.y+=0.0018;
+    globeGroup.rotation.x+=velX;
+    globeGroup.rotation.y+=velY;
+    velX*=0.94; velY*=0.94;
+    if(renderer) renderer.render(scene, camera);
+}
+
+function latLonToVec3(lat, lon, r) {
+    const phi=(90-lat)*Math.PI/180;
+    const theta=(lon+180)*Math.PI/180;
+    return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(theta), r*Math.cos(phi), r*Math.sin(phi)*Math.sin(theta));
+}
+
+function updateGlobePins() {
+    if(!globeGroup) return;
+    globePinMeshes.forEach(m=>{globeGroup.remove(m.parent||m);});
+    // remove all pin objects
+    const toRemove=[];
+    globeGroup.children.forEach(c=>{if(c.userData&&c.userData.isPin)toRemove.push(c);});
+    toRemove.forEach(c=>globeGroup.remove(c));
+    globePinMeshes=[];
+
+    allCities.forEach(c=>{
+        if(c.lat==null||c.lon==null)return;
+        const color=c.visited?0x34d399:0xfbbf24;
+        const pos=latLonToVec3(c.lat, c.lon, GLOBE_R+0.028);
+        const pin=new THREE.Mesh(
+            new THREE.SphereGeometry(0.038,10,10),
+            new THREE.MeshBasicMaterial({color})
+        );
+        pin.position.copy(pos);
+        pin.userData={city:c.city,isPin:true};
+        globeGroup.add(pin);
+        globePinMeshes.push(pin);
+
+        // line from surface to pin
+        const lineGroup=new THREE.Group();lineGroup.userData.isPin=true;
+        const surfPos=latLonToVec3(c.lat,c.lon,GLOBE_R);
+        const lineMesh=new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints([surfPos,pos]),
+            new THREE.LineBasicMaterial({color,transparent:true,opacity:0.55})
+        );
+        lineGroup.add(lineMesh);
+        globeGroup.add(lineGroup);
+    });
+}
+
+function showGlobeTooltip(text, x, y) {
+    const t=document.getElementById("globeTooltip");
+    const container=document.getElementById("globeContainer");
+    const rect=container.getBoundingClientRect();
+    t.textContent=text;t.style.display="block";
+    t.style.left=`${x-rect.left+12}px`;t.style.top=`${y-rect.top-8}px`;
+}
+function hideGlobeTooltip(){document.getElementById("globeTooltip").style.display="none";}
+
+// ============================================================
+// CITY DETAIL PANEL
+// ============================================================
+async function openPanel(city) {
+    currentPanelCity=city;
+    const cityData=allCities.find(c=>c.city===city);
+    if(!cityData)return;
     selectedRating=0;
     document.getElementById("reviewComment").value="";
     document.getElementById("charCount").textContent="0";
+    document.getElementById("noteTextarea").value="";
+    document.getElementById("noteSavedLabel").style.display="none";
     updateRatingPicker(0);
     document.getElementById("ratingDesc").textContent="—";
 
-    document.getElementById("panelHeroImg").src = cityData.image_url;
-    document.getElementById("panelCityName").textContent = cityData.city;
-    document.getElementById("panelCitySub").textContent = cityData.country
-        ? `${cityData.country} · ${cityData.description}` : cityData.description;
+    document.getElementById("panelHeroImg").src=cityData.image_url;
+    document.getElementById("panelCityName").textContent=cityData.city;
+    document.getElementById("panelCitySub").textContent=cityData.country?`${flagEmoji(cityData.country)} ${countryName(cityData.country)} · ${cityData.description}`:cityData.description;
 
-    // Library badges in panel hero
-    const badges = computeBadges(allCities);
-    const cityBadges = badges[city] || [];
-    document.getElementById("panelBadgesRow").innerHTML = cityBadges.map(b=>`<span class="panel-lib-badge">${b}</span>`).join("");
-
-    // Visited button
+    const badges=computeBadges();
+    const cb=badges[city]||[];
+    document.getElementById("panelBadgesRow").innerHTML=cb.map(b=>`<span class="panel-lib-badge">${b}</span>`).join("");
     updatePanelVisitedBtn(cityData.visited);
 
-    const wiki = document.getElementById("panelWiki");
-    if (cityData.wiki_description) { wiki.textContent=cityData.wiki_description; wiki.style.display="block"; }
+    const wiki=document.getElementById("panelWiki");
+    if(cityData.wiki_description){wiki.textContent=cityData.wiki_description;wiki.style.display="block";}
     else wiki.style.display="none";
 
     refreshPanelWeather(cityData);
@@ -671,26 +1028,29 @@ async function openPanel(city) {
     document.getElementById("panelOverlay").classList.add("open");
     document.body.style.overflow="hidden";
 
-    await loadReviews(city);
+    // Async loads
+    loadReviews(city);
+    loadNote(city);
+    loadForecast(city);
 }
 
-function refreshPanelWeather(cityData) {
-    const u = unitSym();
+function refreshPanelWeather(c) {
+    const u=unitSym();
     document.getElementById("panelWeather").innerHTML=`
         <div class="pw-main">
-            <img src="${cityData.icon}" width="56" height="56" alt="">
-            <div class="pw-temp">${toDisplay(cityData.temp)}<span>${u}</span></div>
-            <div class="pw-desc">${cityData.description}</div>
+            <img src="${c.icon}" width="56" height="56" alt="">
+            <div class="pw-temp">${toDisplay(c.temp)}<span>${u}</span></div>
+            <div class="pw-desc">${c.description}</div>
         </div>
         <div class="pw-grid">
-            <div class="pw-item"><span class="pw-label">Feels Like</span><span class="pw-val">${toDisplay(cityData.feels_like)}${u}</span></div>
-            <div class="pw-item"><span class="pw-label">High / Low</span><span class="pw-val">${toDisplay(cityData.temp_max)}° / ${toDisplay(cityData.temp_min)}°</span></div>
-            <div class="pw-item"><span class="pw-label">Humidity</span><span class="pw-val">${cityData.humidity}%</span></div>
-            <div class="pw-item"><span class="pw-label">Wind</span><span class="pw-val">${cityData.wind_speed} km/h</span></div>
-            <div class="pw-item"><span class="pw-label">Visibility</span><span class="pw-val">${cityData.visibility} km</span></div>
-            <div class="pw-item"><span class="pw-label">Pressure</span><span class="pw-val">${cityData.pressure} hPa</span></div>
-            <div class="pw-item"><span class="pw-label">Sunrise</span><span class="pw-val">${cityData.sunrise}</span></div>
-            <div class="pw-item"><span class="pw-label">Sunset</span><span class="pw-val">${cityData.sunset}</span></div>
+            <div class="pw-item"><span class="pw-label">Feels Like</span><span class="pw-val">${toDisplay(c.feels_like)}${u}</span></div>
+            <div class="pw-item"><span class="pw-label">High / Low</span><span class="pw-val">${toDisplay(c.temp_max)}° / ${toDisplay(c.temp_min)}°</span></div>
+            <div class="pw-item"><span class="pw-label">Humidity</span><span class="pw-val">${c.humidity}%</span></div>
+            <div class="pw-item"><span class="pw-label">Wind</span><span class="pw-val">${c.wind_speed} km/h</span></div>
+            <div class="pw-item"><span class="pw-label">Visibility</span><span class="pw-val">${c.visibility} km</span></div>
+            <div class="pw-item"><span class="pw-label">Pressure</span><span class="pw-val">${c.pressure} hPa</span></div>
+            <div class="pw-item"><span class="pw-label">Sunrise</span><span class="pw-val">${c.sunrise}</span></div>
+            <div class="pw-item"><span class="pw-label">Sunset</span><span class="pw-val">${c.sunset}</span></div>
         </div>`;
 }
 
@@ -701,40 +1061,109 @@ function closePanel(){
     currentPanelCity=null;
 }
 
-// ---- Reviews ----
+// ============================================================
+// FORECAST SPARKLINE
+// ============================================================
+async function loadForecast(city) {
+    const chart=document.getElementById("forecastChart");
+    const loading=document.getElementById("forecastLoading");
+    chart.innerHTML=""; loading.style.display="block";
+    try {
+        const r=await fetch(`/get-forecast/${encodeURIComponent(city)}`);
+        const d=await r.json();
+        loading.style.display="none";
+        if(d.error||!d.points||d.points.length===0){chart.innerHTML=`<p class="forecast-na">Forecast unavailable</p>`;return;}
+        const pts=d.points;
+        const temps=pts.map(p=>p.temp);
+        const minT=Math.min(...temps), maxT=Math.max(...temps);
+        const W=300, H=70, pad=8;
+        const xStep=(W-pad*2)/(pts.length-1);
+        const yScale=(H-pad*2)/(maxT-minT||1);
+        const coords=pts.map((p,i)=>({
+            x:pad+i*xStep,
+            y:H-pad-(p.temp-minT)*yScale,
+            time:p.time, temp:p.temp
+        }));
+        const path=coords.map((c,i)=>(i===0?`M${c.x},${c.y}`:`L${c.x},${c.y}`)).join(' ');
+        const areaPath=path+` L${coords[coords.length-1].x},${H} L${coords[0].x},${H} Z`;
+        chart.innerHTML=`<div class="sparkline-wrap">
+            <svg width="100%" viewBox="0 0 ${W} ${H+16}" style="overflow:visible">
+                <defs>
+                    <linearGradient id="spGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.02"/>
+                    </linearGradient>
+                </defs>
+                <path d="${areaPath}" fill="url(#spGrad)"/>
+                <path d="${path}" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                ${coords.map((c,i)=>`
+                    <circle cx="${c.x}" cy="${c.y}" r="3" fill="#38bdf8"/>
+                    <text x="${c.x}" y="${H+13}" text-anchor="middle" font-size="8" fill="#475569">${c.time}</text>
+                    ${i===0||i===pts.length-1||i===Math.floor(pts.length/2)?`<text x="${c.x}" y="${c.y-6}" text-anchor="middle" font-size="9" fill="#94a3b8">${toDisplay(c.temp)}°</text>`:''}
+                `).join('')}
+            </svg>
+        </div>`;
+    } catch(e){loading.style.display="none";chart.innerHTML=`<p class="forecast-na">Forecast unavailable</p>`;}
+}
+
+// ============================================================
+// NOTES
+// ============================================================
+async function loadNote(city) {
+    try {
+        const r=await fetch(`/get-note/${encodeURIComponent(city)}`);
+        const d=await r.json();
+        document.getElementById("noteTextarea").value=d.content||"";
+    } catch(e){}
+}
+
+async function saveNote() {
+    if(!currentPanelCity)return;
+    const content=document.getElementById("noteTextarea").value;
+    try {
+        const r=await fetch("/save-note",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city:currentPanelCity,content})});
+        const d=await r.json();
+        if(r.ok){
+            const lbl=document.getElementById("noteSavedLabel");
+            lbl.style.display="inline";
+            setTimeout(()=>lbl.style.display="none",2000);
+        }
+    } catch(e){}
+}
+
+// ============================================================
+// REVIEWS
+// ============================================================
 async function loadReviews(city) {
     try {
-        const r = await fetch(`/get-reviews/${encodeURIComponent(city)}`);
-        const d = await r.json();
-        const badge = document.getElementById("panelAvgBadge");
-        if (d.avg_rating) {
-            badge.style.display="flex";
-            document.getElementById("panelAvgVal").textContent=d.avg_rating;
-            document.getElementById("panelAvgCount").textContent=`${d.count} review${d.count!==1?"s":""}`;
-        } else { badge.style.display="none"; }
-
+        const r=await fetch(`/get-reviews/${encodeURIComponent(city)}`);
+        const d=await r.json();
+        const badge=document.getElementById("panelAvgBadge");
+        if(d.avg_rating){badge.style.display="flex";document.getElementById("panelAvgVal").textContent=d.avg_rating;document.getElementById("panelAvgCount").textContent=`${d.count} review${d.count!==1?"s":""}`;}
+        else badge.style.display="none";
         document.getElementById("panelReviewCount").textContent=d.count>0?`${d.count} review${d.count!==1?"s":""}` : "No reviews yet";
 
         const myR=d.my_review;
         const delBtn=document.getElementById("deleteReviewBtn");
         const label=document.getElementById("writeReviewLabel");
         const submitBtn=document.getElementById("submitReviewBtn");
-        if (myR) {
-            selectedRating=myR.rating; updateRatingPicker(myR.rating);
+        if(myR){
+            selectedRating=myR.rating;updateRatingPicker(myR.rating);
             document.getElementById("reviewComment").value=myR.comment||"";
             document.getElementById("charCount").textContent=(myR.comment||"").length;
             document.getElementById("ratingDesc").textContent=ratingLabel(myR.rating);
-            label.textContent="Edit Your Review"; delBtn.style.display="flex";
-            submitBtn.innerHTML=`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg> Update Review`;
+            label.textContent="Edit Your Review";delBtn.style.display="flex";
+            submitBtn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg> Update Review`;
         } else {
-            label.textContent="Write a Review"; delBtn.style.display="none";
-            submitBtn.innerHTML=`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Post Review`;
+            label.textContent="Write a Review";delBtn.style.display="none";
+            submitBtn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Post Review`;
         }
 
         const list=document.getElementById("reviewsList");
-        if (d.reviews.length===0) { list.innerHTML=`<p class="no-reviews-yet">Be the first to review ${city}!</p>`; return; }
+        if(d.reviews.length===0){list.innerHTML=`<p class="no-reviews-yet">Be the first to review ${city}!</p>`;return;}
         list.innerHTML=d.reviews.map(rv=>{
             const date=rv.updated_at?"Edited "+rv.updated_at.slice(0,10):rv.created_at.slice(0,10);
+            const stars=ratingToStars(rv.rating);
             return`<div class="review-card">
                 <div class="review-header">
                     <div class="review-user-row">
@@ -743,7 +1172,7 @@ async function loadReviews(city) {
                     </div>
                     <div class="review-score-pill score-${scoreColor(rv.rating)}">${rv.rating}/10</div>
                 </div>
-                <div class="review-stars">${ratingToStars(rv.rating)}</div>
+                <div class="review-stars">${stars}</div>
                 ${rv.comment?`<p class="review-comment">"${rv.comment}"</p>`:""}
             </div>`;
         }).join("");
@@ -751,11 +1180,10 @@ async function loadReviews(city) {
 }
 
 async function submitReview(){
-    if(!currentPanelCity) return;
+    if(!currentPanelCity)return;
     if(selectedRating===0){showToast("Pick a rating first.","warn");return;}
     const comment=document.getElementById("reviewComment").value.trim();
-    const btn=document.getElementById("submitReviewBtn");
-    btn.disabled=true;
+    const btn=document.getElementById("submitReviewBtn");btn.disabled=true;
     try {
         const r=await fetch("/add-review",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city:currentPanelCity,rating:selectedRating,comment})});
         const d=await r.json();
@@ -766,16 +1194,18 @@ async function submitReview(){
 }
 
 async function deleteMyReview(){
-    if(!currentPanelCity) return;
-    try {
+    if(!currentPanelCity)return;
+    try{
         await fetch("/delete-review",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({city:currentPanelCity})});
-        showToast("Review deleted.","info"); selectedRating=0; updateRatingPicker(0);
-        document.getElementById("reviewComment").value=""; document.getElementById("charCount").textContent="0";
-        await loadCities(); await loadReviews(currentPanelCity);
-    } catch(e){}
+        showToast("Review deleted.","info");selectedRating=0;updateRatingPicker(0);
+        document.getElementById("reviewComment").value="";document.getElementById("charCount").textContent="0";
+        await loadCities();await loadReviews(currentPanelCity);
+    }catch(e){}
 }
 
-// ---- Rating picker ----
+// ============================================================
+// RATING PICKER
+// ============================================================
 const ratingLabels=["","Terrible","Poor","Below Average","Mediocre","Average","Decent","Good","Great","Excellent","Perfect"];
 function ratingLabel(n){return ratingLabels[n]||"—";}
 function buildRatingPicker(){
@@ -787,24 +1217,23 @@ function buildRatingPicker(){
     }
 }
 function updateRatingPicker(val){
-    document.querySelectorAll(".rating-dot").forEach(btn=>{
-        const v=parseInt(btn.dataset.val);
-        btn.classList.toggle("filled",v<=val);btn.classList.toggle("active",v===val);
-    });
+    document.querySelectorAll(".rating-dot").forEach(btn=>{const v=parseInt(btn.dataset.val);btn.classList.toggle("filled",v<=val);btn.classList.toggle("active",v===val);});
 }
 function scoreColor(n){if(n>=8)return"green";if(n>=5)return"amber";return"red";}
 function ratingToStars(n){
     const full=Math.round(n/2);let s="";
-    for(let i=1;i<=5;i++)s+=`<svg width="13" height="13" viewBox="0 0 24 24" fill="${i<=full?'#fbbf24':'none'}" stroke="#fbbf24" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+    for(let i=1;i<=5;i++)s+=`<svg width="13" height="13" viewBox="0 0 24 24" fill="${i<=full?"#fbbf24":"none"}" stroke="#fbbf24" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
     return s;
 }
 
-// ---- Listeners ----
+// ============================================================
+// LISTENERS
+// ============================================================
 document.getElementById("reviewComment").addEventListener("input",function(){document.getElementById("charCount").textContent=this.value.length;});
 document.getElementById("cityInput").addEventListener("keydown",e=>{if(e.key==="Enter")addCity();});
 document.getElementById("navUser").addEventListener("click",function(e){this.classList.toggle("open");e.stopPropagation();});
 document.addEventListener("click",()=>document.getElementById("navUser").classList.remove("open"));
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closePanel();closeSidebar();}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closePanel();closeSidebar();closeComparison();}});
 </script>
 </body>
 </html>
